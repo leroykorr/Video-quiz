@@ -5,12 +5,21 @@
     <title>English Video Quiz</title>
     <style>
         body { font-family: Arial, sans-serif; background-color: #1a1a2e; color: white; margin: 0; padding: 0; padding-bottom: 50px; text-align: center; }
+        
+        /* Шапка с командами и уровнями */
         .scoreboard { position: sticky; top: 0; background-color: #16213e; border-bottom: 4px solid #e94560; box-shadow: 0 4px 15px rgba(0,0,0,0.8); z-index: 1000; padding: 10px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; }
+        
         .team-card { background-color: #34495e; padding: 8px; border-radius: 10px; display: flex; align-items: center; gap: 5px; }
         .team-name { width: 70px; font-size: 16px; font-weight: bold; background: transparent; border: none; color: #f1c40f; text-align: center; border-bottom: 1px dashed #7f8c8d; outline: none;}
         .team-score { width: 40px; font-size: 20px; font-weight: bold; background: transparent; border: none; color: white; text-align: center; outline: none;}
         .btn-plus { background-color: #2ecc71; color: white; border: none; border-radius: 5px; padding: 5px 10px; font-size: 16px; cursor: pointer; }
         .btn-minus { background-color: #e74c3c; color: white; border: none; border-radius: 5px; padding: 5px 10px; font-size: 16px; cursor: pointer; }
+        
+        /* Панель уровней */
+        .level-panel { display: flex; gap: 5px; background-color: #0f3460; padding: 5px; border-radius: 8px; }
+        .level-btn { padding: 8px 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; color: white; background-color: #533483; transition: 0.2s; }
+        .level-btn.active { background-color: #e94560; box-shadow: 0 0 10px #e94560; }
+        
         .settings-btn { background-color: #e94560; color: white; border: none; padding: 10px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; }
         
         /* Модальное окно настроек */
@@ -30,6 +39,7 @@
         .player-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 10px; border: none; }
         .video-controls { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
         .video-controls button { padding: 10px 15px; font-size: 14px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; color: white; background-color: #2ecc71; }
+        
         .question-block { background-color: #f5f5f5; color: #16213e; padding: 15px; border-radius: 15px; margin-bottom: 15px; text-align: left; }
         .question-text { font-size: 18px; font-weight: bold; margin-bottom: 10px; }
         .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -41,12 +51,15 @@
     </style>
 </head>
 <body>
-    <!-- Панель счета с кнопкой настроек -->
     <div class="scoreboard" id="scoreboard">
+        <div class="level-panel">
+            <button class="level-btn active" onclick="setLevel('all')" id="btn-lvl-all">All</button>
+            <button class="level-btn" onclick="setLevel(1)" id="btn-lvl-1">L1</button>
+            <button class="level-btn" onclick="setLevel(2)" id="btn-lvl-2">L2</button>
+        </div>
         <button class="settings-btn" onclick="openSettings()">⚙️ Edit Teams</button>
     </div>
 
-    <!-- Модальное окно для настройки команд -->
     <div class="modal" id="settingsModal">
         <div class="modal-content">
             <h2>Team Settings</h2>
@@ -62,16 +75,63 @@
     <div class="container" id="quizContainer"></div>
 
     <script>
-        // База видео
+        let currentLevelFilter = 'all';
+
+        function setLevel(level) {
+            currentLevelFilter = level;
+            document.getElementById('btn-lvl-all').classList.remove('active');
+            document.getElementById('btn-lvl-1').classList.remove('active');
+            document.getElementById('btn-lvl-2').classList.remove('active');
+            
+            if (level === 'all') document.getElementById('btn-lvl-all').classList.add('active');
+            else if (level === 1) document.getElementById('btn-lvl-1').classList.add('active');
+            else if (level === 2) document.getElementById('btn-lvl-2').classList.add('active');
+
+            renderQuiz();
+        }
+
+        // ФИНАЛЬНАЯ БАЗА ДАННЫХ
         const quizData = [
             {
-                title: "Video 1: Bluey",
+                title: "Video 1: The Newspaper",
                 youtubeId: "mQz3G0G3XHs", 
-                startTime: 0, 
+                startTime: 4, 
                 endTime: 15,  
                 questions: [
-                    { text: "1. What is Bluey doing?", options: { A: "Sleeping", B: "Listening to music", C: "Eating", D: "Running" }, correct: "B" },
-                    { text: "2. What does Bluey love?", options: { A: "Burger Dog", B: "Pizza", C: "Ice Cream", D: "Apples" }, correct: "A" }
+                    { text: "Who is on the couch?", options: { A: "Mom", B: "Dad", C: "Bluey", D: "Bingo" }, correct: "B", level: 1 },
+                    { text: "What do the kids want?", options: { A: "A song", B: "A toy", C: "An apple", D: "A book" }, correct: "A", level: 1 },
+                    { text: "Does Dad say 'Yes'?", options: { A: "Yes", B: "No", C: "He is sleeping", D: "He is angry" }, correct: "A", level: 1 },
+                    { text: "How does Dad feel at the beginning?", options: { A: "Relaxed", B: "Angry", C: "Scared", D: "Sad" }, correct: "A", level: 2 },
+                    { text: "What is Dad reading?", options: { A: "A newspaper", B: "A book", C: "A magazine", D: "A comic" }, correct: "A", level: 2 },
+                    { text: "What shouldn't the song be?", options: { A: "Annoying", B: "Fast", C: "Long", D: "Sad" }, correct: "A", level: 2 }
+                ]
+            },
+            {
+                title: "Video 2: Burger Dog",
+                youtubeId: "mQz3G0G3XHs", 
+                startTime: 15, 
+                endTime: 32,  
+                questions: [
+                    { text: "What is the name of the song?", options: { A: "Burger Cat", B: "Burger Dog", C: "Hot Dog", D: "Pizza" }, correct: "B", level: 1 },
+                    { text: "What does the burger have inside?", options: { A: "Pickles and cheese", B: "Fish and chips", C: "Apple and banana", D: "Bread and butter" }, correct: "A", level: 1 },
+                    { text: "What are the kids doing?", options: { A: "Sleeping", B: "Dancing", C: "Reading", D: "Eating" }, correct: "B", level: 1 },
+                    { text: "Who asks: 'What's it called?'", options: { A: "Bluey", B: "Bingo", C: "Dad", D: "Mom" }, correct: "C", level: 2 },
+                    { text: "How does Dad react when he hears the song?", options: { A: "He says it's not annoying", B: "He turns it off", C: "He gets angry", D: "He sings loudly" }, correct: "A", level: 2 },
+                    { text: "What is NOT mentioned in the song?", options: { A: "Cheese", B: "Pickles", C: "Tomatoes", D: "Sugar" }, correct: "C", level: 2 }
+                ]
+            },
+            {
+                title: "Video 3: Out of Battery",
+                youtubeId: "mQz3G0G3XHs", 
+                startTime: 45, 
+                endTime: 58,  
+                questions: [
+                    { text: "What does Dad say about his phone?", options: { A: "It is broken", B: "It is out of battery", C: "It is lost", D: "It is new" }, correct: "B", level: 1 },
+                    { text: "What color is the phone screen?", options: { A: "Red", B: "Green", C: "Black", D: "White" }, correct: "C", level: 1 },
+                    { text: "Does Bluey believe Dad?", options: { A: "Yes", B: "No", C: "She is sleeping", D: "She is crying" }, correct: "B", level: 1 },
+                    { text: "Why does Dad say his phone is out of battery?", options: { A: "He wants to stop playing the song", B: "The phone is really broken", C: "He wants to go to sleep", D: "He is playing a game" }, correct: "A", level: 2 },
+                    { text: "What does Bluey say to Dad?", options: { A: "No, it hasn't.", B: "Yes, it has.", C: "I want a new phone.", D: "Let's go to sleep." }, correct: "A", level: 2 },
+                    { text: "What does Bluey see on the phone?", options: { A: "A black screen", B: "A funny video", C: "A new game", D: "A red battery" }, correct: "A", level: 2 }
                 ]
             }
         ];
@@ -84,9 +144,8 @@
 
         function renderScoreboard() {
             const header = document.getElementById('scoreboard');
-            // Удаляем старые карточки, оставляя кнопку настроек
             Array.from(header.children).forEach(child => {
-                if (!child.classList.contains('settings-btn')) header.removeChild(child);
+                if (child.classList.contains('team-card')) header.removeChild(child);
             });
 
             teams.forEach((team, index) => {
@@ -105,10 +164,7 @@
         function changeScore(index, amount) { teams[index].score += amount; saveData(); renderScoreboard(); }
         function updateScore(index, value) { teams[index].score = parseInt(value) || 0; saveData(); renderScoreboard(); }
         function updateTeamName(index, value) { teams[index].name = value; saveData(); }
-
-        function saveData() {
-            localStorage.setItem('videoQuizTeams', JSON.stringify(teams));
-        }
+        function saveData() { localStorage.setItem('videoQuizTeams', JSON.stringify(teams)); }
 
         // Настройки
         function openSettings() {
@@ -117,9 +173,7 @@
             teams.forEach(team => addTeamInput(team.name));
             document.getElementById('settingsModal').style.display = 'flex';
         }
-
         function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
-
         function addTeamInput(value = "") {
             const container = document.getElementById('teamInputsContainer');
             const input = document.createElement('input');
@@ -128,7 +182,6 @@
             input.style.display = "block"; input.style.margin = "0 auto 10px auto";
             container.appendChild(input);
         }
-
         function saveSettings() {
             const inputs = document.querySelectorAll('.team-settings-input');
             const newTeams = [];
@@ -138,11 +191,7 @@
                     newTeams.push({ name: input.value.trim(), score: existing ? existing.score : 0 });
                 }
             });
-            if (newTeams.length > 0) {
-                teams = newTeams;
-                saveData();
-                renderScoreboard();
-            }
+            if (newTeams.length > 0) { teams = newTeams; saveData(); renderScoreboard(); }
             closeSettings();
         }
 
@@ -156,12 +205,18 @@
                 section.className = 'video-section';
                 
                 let qHTML = '';
+                let questionNumber = 1;
+
                 videoData.questions.forEach((q) => {
+                    if (currentLevelFilter !== 'all' && q.level !== currentLevelFilter) return;
+
                     let optHTML = '';
                     for (const [key, value] of Object.entries(q.options)) {
                         optHTML += `<button class="option-btn" onclick="checkAnswer(this, '${q.correct}', '${key}')"><span class="letter">${key}</span> ${value}</button>`;
                     }
-                    qHTML += `<div class="question-block"><div class="question-text">${q.text}</div><div class="options-grid">${optHTML}</div></div>`;
+                    let qText = questionNumber + ". " + q.text;
+                    qHTML += `<div class="question-block"><div class="question-text">${qText}</div><div class="options-grid">${optHTML}</div></div>`;
+                    questionNumber++;
                 });
 
                 section.innerHTML = `
