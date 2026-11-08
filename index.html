@@ -4,421 +4,72 @@
     <meta charset="UTF-8">
     <title>English Video Quiz</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #1a1a2e;
-            color: white;
-            margin: 0;
-            padding: 0;
-            padding-bottom: 50px;
-            text-align: center;
-        }
-
-        /* --- STICKY SCOREBOARD HEADER --- */
-        .scoreboard {
-            position: sticky;
-            top: 0;
-            background-color: #16213e;
-            border-bottom: 4px solid #e94560;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.8);
-            z-index: 1000;
-            padding: 10px 15px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-        }
-        .team-card {
-            background-color: #34495e;
-            padding: 8px 15px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-        }
-        .team-name {
-            font-size: 18px;
-            font-weight: bold;
-            background: transparent;
-            border: none;
-            color: #f1c40f;
-            width: 90px;
-            text-align: center;
-            border-bottom: 1px dashed #7f8c8d;
-            outline: none;
-        }
-        .team-name:focus {
-            border-bottom: 1px solid #f1c40f;
-        }
-        .team-score-input {
-            width: 50px;
-            font-size: 24px;
-            font-weight: bold;
-            background: transparent;
-            border: none;
-            color: white;
-            text-align: center;
-            outline: none;
-        }
-        .score-btn {
-            padding: 5px 10px;
-            font-size: 18px;
-            font-weight: bold;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            color: white;
-        }
-        .btn-plus { background-color: #2ecc71; }
-        .btn-minus { background-color: #e74c3c; }
-        .settings-btn {
-            background-color: #e94560;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        /* --- SETTINGS MODAL --- */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.8);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background-color: #16213e;
-            padding: 20px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 400px;
-            border: 3px solid #e94560;
-        }
-        .modal-content input {
-            width: 80%;
-            padding: 10px;
-            font-size: 16px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            border: 1px solid #7f8c8d;
-        }
-        .modal-actions {
-            margin-top: 15px;
-            display: flex;
-            justify-content: space-around;
-        }
-        .modal-actions button {
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .btn-save { background-color: #2ecc71; color: white; }
-        .btn-cancel { background-color: #e74c3c; color: white; }
-
-        /* --- MAIN CONTENT (VIDEO & QUESTIONS) --- */
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 15px;
-        }
-        .video-section {
-            background-color: #16213e;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 40px;
-            border: 3px solid #533483;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-        }
-        .video-title {
-            font-size: 28px;
-            color: #e94560;
-            margin-top: 0;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-        
-        /* YouTube Player Container */
-        .player-wrapper {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-            margin-bottom: 15px;
-        }
-        .player-wrapper iframe, .player-wrapper .yt-player-div {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            border-radius: 10px;
-            border: none;
-        }
-
-        .video-controls {
-            display: flex;
-            flex-wrap: wrap; /* Чтобы кнопки не вылезали на телефонах */
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-        .video-controls button {
-            padding: 10px 15px;
-            font-size: 16px;
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            color: white;
-            background-color: #533483;
-            transition: 0.2s;
-        }
-        .video-controls button:hover { background-color: #3e2562; }
+        body { font-family: Arial, sans-serif; background-color: #1a1a2e; color: white; margin: 0; padding: 0; padding-bottom: 50px; text-align: center; }
+        .scoreboard { position: sticky; top: 0; background-color: #16213e; border-bottom: 4px solid #e94560; box-shadow: 0 4px 15px rgba(0,0,0,0.8); z-index: 1000; padding: 10px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; }
+        .team-card { background-color: #34495e; padding: 8px; border-radius: 10px; display: flex; align-items: center; gap: 5px; }
+       -align .team-name { width: 70px; font-size: 16px; font-weight: bold; background: transparent; border: none; color: #f1c40f; text: center; }
+        .team-score { width: 40px; font-size: 20px; font-weight: bold; background: transparent; border: none; color: white; text-align: center; }
+        .btn-plus { background-color: #2ecc71; color: white; border: none; border-radius: 5px; padding: 5px 10px; font-size: 16px; cursor: pointer; }
+        .btn-minus { background-color: #e74c3c; color: white; border: none; border-radius: 5px; padding: 5px 10px; font-size: 16px; cursor: pointer; }
+        .container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
+        .video-section { background-color: #16213e; border-radius: 15px; padding: 15px; margin-bottom: 30px; border: 3px solid #533483; }
+        .video-title { font-size: 22px; color: #e94560; margin-top: 0; margin-bottom: 15px; text-transform: uppercase; }
+        .player-wrapper { position: relative; width: 100%; padding-bottom: 56.25%; margin-bottom: 15px; }
+        .player-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 10px; border: none; }
+        .video-controls { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+        .video-controls button { padding: 10px 15px; font-size: 14px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; color: white; background-color: #533483; }
         .video-controls .btn-play { background-color: #2ecc71; }
-        .video-controls .btn-play:hover { background-color: #27ae60; }
-        .video-controls .btn-pause { background-color: #e67e22; }
-        .video-controls .btn-pause:hover { background-color: #d35400; }
-
-        /* Questions */
-        .question-block {
-            background-color: #f5f5f5;
-            color: #16213e;
-            padding: 20px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            text-align: left;
-        }
-        .question-text {
-            font-size: 22px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        .option-btn {
-            background-color: #ecf0f1;
-            border: 3px solid #bdc3c7;
-            padding: 15px;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #2c3e50;
-            cursor: pointer;
-            text-align: left;
-            transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .option-btn:hover {
-            border-color: #3498db;
-            background-color: #e8f4fd;
-        }
-        .option-btn .letter {
-            background-color: #34495e;
-            color: white;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%;
-            font-size: 16px;
-        }
-        
-        /* Правильный / Неправильный ответ */
-        .option-btn.correct {
-            background-color: #2ecc71;
-            border-color: #27ae60;
-            color: white;
-        }
-        .option-btn.correct .letter { background-color: #fff; color: #2ecc71; }
-        
-        .option-btn.wrong {
-            background-color: #e74c3c;
-            border-color: #c0392b;
-            color: white;
-            opacity: 0.6;
-        }
-        .option-btn.wrong .letter { background-color: #fff; color: #e74c3c; }
-
-        .option-btn:disabled {
-            cursor: not-allowed;
-        }
+        .question-block { background-color: #f5f5f5; color: #16213e; padding: 15px; border-radius: 15px; margin-bottom: 15px; text-align: left; }
+        .question-text { font-size: 18px; font-weight: bold; margin-bottom: 10px; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .option-btn { background-color: #ecf0f1; border: 2px solid #bdc3c7; padding: 10px; border-radius: 10px; font-size: 16px; font-weight: bold; color: #2c3e50; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 8px; }
+        .option-btn .letter { background-color: #34495e; color: white; width: 25px; height: 25px; display: flex; justify-content: center; align-items: center; border-radius: 50%; font-size: 14px; }
+        .option-btn.correct { background-color: #2ecc71; border-color: #27ae60; color: white; }
+        .option-btn.wrong { background-color: #e74c3c; border-color: #c0392b; color: white; opacity: 0.7; }
+        .option-btn:disabled { cursor: not-allowed; }
     </style>
 </head>
 <body>
-
-    <!-- SCOREBOARD HEADER -->
-    <div class="scoreboard" id="scoreboard">
-        <button class="settings-btn" onclick="openSettings()">⚙️ Edit Teams</button>
-    </div>
-
-    <!-- SETTINGS MODAL -->
-    <div class="modal" id="settingsModal">
-        <div class="modal-content">
-            <h2>Team Settings</h2>
-            <div id="teamInputsContainer"></div>
-            <button onclick="addTeamInput()" style="margin-bottom: 15px; background-color: #3498db; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold;">+ Add Team</button>
-            <div class="modal-actions">
-                <button class="btn-save" onclick="saveSettings()">Save</button>
-                <button class="btn-cancel" onclick="closeSettings()">Cancel</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MAIN CONTAINER -->
+    <div class="scoreboard" id="scoreboard"></div>
     <div class="container" id="quizContainer"></div>
 
-    <!-- YOUTUBE IFRAME API -->
-    <script src="https://www.youtube.com/iframe_api"></script>
-    
     <script>
-        // === ДАННЫЕ ДЛЯ ВИКТОРИНЫ ===
+        // Данные (одно видео для теста)
         const quizData = [
             {
-                title: "Video 1: Peppa Pig - The Playground",
-                youtubeId: "0BcXjH7vV70", 
-                startTime: 5, 
-                endTime: 15,  
+                title: "Video 1: Test Video",
+                // Это ID видео, которое 100% разрешено встраивать. У Peppa Pig часто стоит запрет.
+                youtubeId: "jNQXAC9IVRw", 
+                startTime: 0, 
+                endTime: 10,  
                 questions: [
-                    {
-                        text: "1. What color is the slide?",
-                        options: { A: "Red", B: "Blue", C: "Yellow", D: "Green" },
-                        correct: "A"
-                    },
-                    {
-                        text: "2. Who is playing with Peppa?",
-                        options: { A: "George", B: "Suzy Sheep", C: "Daddy Pig", D: "Rebecca Rabbit" },
-                        correct: "B"
-                    }
-                ]
-            },
-            {
-                title: "Video 2: Peppa Pig - Muddy Puddles",
-                youtubeId: "0BcXjH7vV70", 
-                startTime: 20,
-                endTime: 30,
-                questions: [
-                    {
-                        text: "3. What is Peppa wearing?",
-                        options: { A: "A dress", B: "Boots", C: "A hat", D: "Glasses" },
-                        correct: "B"
-                    },
-                    {
-                        text: "4. What does Peppa like to jump in?",
-                        options: { A: "Leaves", B: "Water", C: "Muddy puddles", D: "Snow" },
-                        correct: "C"
-                    }
+                    { text: "1. What is this video about?", options: { A: "A zoo", B: "A park", C: "A school", D: "A house" }, correct: "A" },
+                    { text: "2. Are there any animals here?", options: { A: "Yes", B: "No", C: "Maybe", D: "I don't know" }, correct: "A" }
                 ]
             }
         ];
 
-        // === ЛОГИКА КОМАНД ===
-        let teams = JSON.parse(localStorage.getItem('teamsData')) || [
-            { name: "Red", score: 0 },
-            { name: "Blue", score: 0 }
-        ];
+        let teams = [{ name: "Red", score: 0 }, { name: "Blue", score: 0 }];
 
         function renderScoreboard() {
             const header = document.getElementById('scoreboard');
-            Array.from(header.children).forEach(child => {
-                if (!child.classList.contains('settings-btn')) header.removeChild(child);
-            });
-
+            header.innerHTML = '';
             teams.forEach((team, index) => {
                 const card = document.createElement('div');
                 card.className = 'team-card';
                 card.innerHTML = `
                     <input type="text" class="team-name" value="${team.name}" onchange="updateTeamName(${index}, this.value)">
-                    <button class="score-btn btn-minus" onclick="changeScore(${index}, -1)">-</button>
-                    <input type="number" class="team-score-input" value="${team.score}" onchange="updateManualScore(${index}, this.value)">
-                    <button class="score-btn btn-plus" onclick="changeScore(${index}, 1)">+</button>
+                    <button class="btn-minus" onclick="changeScore(${index}, -1)">-</button>
+                    <input type="number" class="team-score" value="${team.score}" onchange="updateScore(${index}, this.value)">
+                    <button class="btn-plus" onclick="changeScore(${index}, 1)">+</button>
                 `;
-                header.insertBefore(card, header.querySelector('.settings-btn'));
+                header.appendChild(card);
             });
         }
 
-        function changeScore(index, amount) {
-            teams[index].score += amount;
-            saveToLocalStorage();
-            renderScoreboard();
-        }
-
-        function updateManualScore(index, value) {
-            teams[index].score = parseInt(value) || 0;
-            saveToLocalStorage();
-            renderScoreboard();
-        }
-
-        function updateTeamName(index, value) {
-            teams[index].name = value;
-            saveToLocalStorage();
-        }
-
-        function saveToLocalStorage() {
-            localStorage.setItem('teamsData', JSON.stringify(teams));
-        }
-
-        // === НАСТРОЙКИ ===
-        function openSettings() {
-            const container = document.getElementById('teamInputsContainer');
-            container.innerHTML = '';
-            teams.forEach(team => { addTeamInput(team.name); });
-            document.getElementById('settingsModal').style.display = 'flex';
-        }
-
-        function closeSettings() {
-            document.getElementById('settingsModal').style.display = 'none';
-        }
-
-        function addTeamInput(value = "") {
-            const container = document.getElementById('teamInputsContainer');
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.value = value;
-            input.placeholder = "Team Name";
-            input.className = "team-settings-input";
-            input.style.display = "block";
-            input.style.margin = "0 auto 10px auto";
-            container.appendChild(input);
-        }
-
-        function saveSettings() {
-            const inputs = document.querySelectorAll('.team-settings-input');
-            const newTeams = [];
-            inputs.forEach(input => {
-                if (input.value.trim() !== "") {
-                    const existingTeam = teams.find(t => t.name === input.value.trim());
-                    newTeams.push({ name: input.value.trim(), score: existingTeam ? existingTeam.score : 0 });
-                }
-            });
-            if (newTeams.length > 0) {
-                teams = newTeams;
-                saveToLocalStorage();
-                renderScoreboard();
-            }
-            closeSettings();
-        }
-
-        // === ВИДЕО И ВОПРОСЫ ===
-        let players = {}; 
-        let videoTimers = {};
-
-        function onYouTubeIframeAPIReady() {
-            renderQuiz();
-        }
+        function changeScore(index, amount) { teams[index].score += amount; renderScoreboard(); }
+        function updateScore(index, value) { teams[index].score = parseInt(value) || 0; renderScoreboard(); }
+        function updateTeamName(index, value) { teams[index].name = value; }
 
         function renderQuiz() {
             const container = document.getElementById('quizContainer');
@@ -427,127 +78,51 @@
             quizData.forEach((videoData, vIndex) => {
                 const section = document.createElement('div');
                 section.className = 'video-section';
-
-                const title = document.createElement('h2');
-                title.className = 'video-title';
-                title.innerText = videoData.title;
-                section.appendChild(title);
-
-                const playerWrapper = document.createElement('div');
-                playerWrapper.className = 'player-wrapper';
-                const playerDivId = `player-${vIndex}`;
-                playerWrapper.innerHTML = `<div id="${playerDivId}" class="yt-player-div"></div>`;
-                section.appendChild(playerWrapper);
-
-                const controls = document.createElement('div');
-                controls.className = 'video-controls';
-                controls.innerHTML = `
-                    <button class="btn-play" onclick="playVideo(${vIndex}, 1)">▶ Play</button>
-                    <button class="btn-pause" onclick="pauseVideo(${vIndex})">⏸ Pause</button>
-                    <button onclick="playVideo(${vIndex}, 0.5)">🐌 0.5x</button>
-                    <button onclick="playVideo(${vIndex}, 0.75)">🐢 0.75x</button>
-                    <button onclick="playVideo(${vIndex}, 1)">🐇 1x</button>
-                `;
-                section.appendChild(controls);
-
-                videoData.questions.forEach((q, qIndex) => {
-                    const qBlock = document.createElement('div');
-                    qBlock.className = 'question-block';
-                    
-                    let optionsHTML = '';
+                
+                let qHTML = '';
+                videoData.questions.forEach((q) => {
+                    let optHTML = '';
                     for (const [key, value] of Object.entries(q.options)) {
-                        optionsHTML += `
-                            <button class="option-btn" onclick="checkAnswer(this, '${key}', '${q.correct}')">
-                                <span class="letter">${key}</span> ${value}
-                            </button>
-                        `;
+                        optHTML += `<button class="option-btn" onclick="checkAnswer(this, '${q.correct}', '${key}')"><span class="letter">${key}</span> ${value}</button>`;
                     }
-
-                    qBlock.innerHTML = `
-                        <div class="question-text">${q.text}</div>
-                        <div class="options-grid">${optionsHTML}</div>
-                    `;
-                    section.appendChild(qBlock);
+                    qHTML += `<div class="question-block"><div class="question-text">${q.text}</div><div class="options-grid">${optHTML}</div></div>`;
                 });
 
+                // Простой iframe (без сложного API, работает на телефонах)
+                section.innerHTML = `
+                    <h2 class="video-title">${videoData.title}</h2>
+                    <div class="player-wrapper">
+                        <iframe id="video-${vIndex}" src="https://www.youtube.com/embed/${videoData.youtubeId}?start=${videoData.startTime}&end=${videoData.endTime}&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-controls">
+                        <button class="btn-play" onclick="reloadVideo(${vIndex})">▶ Replay</button>
+                    </div>
+                    ${qHTML}
+                `;
                 container.appendChild(section);
-
-                players[vIndex] = new YT.Player(playerDivId, {
-                    videoId: videoData.youtubeId,
-                    playerVars: {
-                        'start': videoData.startTime,
-                        'end': videoData.endTime,
-                        'controls': 0, 
-                        'disablekb': 1,
-                        'rel': 0,
-                        'modestbranding': 1
-                    },
-                    events: {
-                        'onStateChange': (event) => onPlayerStateChange(event, videoData.endTime, vIndex)
-                    }
-                });
             });
         }
 
-        function playVideo(index, speed = 1) {
-            const player = players[index];
-            const videoData = quizData[index];
-            
-            if (player && player.playVideo) {
-                // Если видео ушло за пределы нужного отрезка, начинаем заново
-                if (player.getCurrentTime() >= videoData.endTime || player.getCurrentTime() < videoData.startTime) {
-                    player.seekTo(videoData.startTime, true);
-                }
-                
-                player.setPlaybackRate(speed);
-                player.playVideo();
-
-                // Ставим таймер авто-паузы
-                clearInterval(videoTimers[index]);
-                videoTimers[index] = setInterval(() => {
-                    if (player.getCurrentTime() >= videoData.endTime) {
-                        player.pauseVideo();
-                        clearInterval(videoTimers[index]);
-                    }
-                }, 100); 
-            }
+        // Просто перезагружаем iframe, чтобы видео началось сначала
+        function reloadVideo(index) {
+            const iframe = document.getElementById(`video-${index}`);
+            iframe.src = iframe.src; 
         }
 
-        function pauseVideo(index) {
-            const player = players[index];
-            if (player && player.pauseVideo) {
-                player.pauseVideo();
-                clearInterval(videoTimers[index]);
-            }
-        }
-
-        function onPlayerStateChange(event, endTime, index) {
-            if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
-                clearInterval(videoTimers[index]);
-            }
-        }
-
-        function checkAnswer(btnElement, selected, correct) {
+        function checkAnswer(btnElement, correct, selected) {
             if (btnElement.parentElement.querySelector('.correct')) return;
             const options = btnElement.parentElement.querySelectorAll('.option-btn');
-            
             options.forEach(opt => {
-                opt.disabled = true; 
-                // Берем букву из спан-элемента, чтобы избежать ошибок с текстом
+                opt.disabled = true;
                 const letter = opt.querySelector('.letter').innerText;
-                if (letter === correct) {
-                    opt.classList.add('correct'); 
-                } else if (opt === btnElement) {
-                    opt.classList.add('wrong'); 
-                }
+                if (letter === correct) opt.classList.add('correct');
+                else if (letter === selected) opt.classList.add('wrong');
             });
         }
 
         window.onload = function() {
             renderScoreboard();
-            if (typeof YT !== 'undefined' && YT.loaded) {
-                renderQuiz();
-            }
+            renderQuiz();
         };
     </script>
 </body>
