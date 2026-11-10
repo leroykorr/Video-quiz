@@ -44,7 +44,7 @@
         .question-text { font-size: 18px; font-weight: bold; margin-bottom: 10px; }
         .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .option-btn { background-color: #ecf0f1; border: 2px solid #bdc3c7; padding: 10px; border-radius: 10px; font-size: 16px; font-weight: bold; color: #2c3e50; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 8px; }
-        .option-btn .letter { background-color: #34495e; color: white; width: 25px; height: 25px; display: flex; justify-content: center; align-items: center; border-radius: 50%; font-size: 14px; }
+        .option-btn .letter { background-color: #34495e; color: white; width: 30px; height: 30px; display: flex; justify-content: center; align-items: center; border-radius: 50%; font-size: 16px; }
         .option-btn.correct { background-color: #2ecc71; border-color: #27ae60; color: white; }
         .option-btn.wrong { background-color: #e74c3c; border-color: #c0392b; color: white; opacity: 0.7; }
         .option-btn:disabled { cursor: not-allowed; }
@@ -90,7 +90,7 @@
             renderQuiz();
         }
 
-        // ФИНАЛЬНАЯ БАЗА ДАННЫХ (4 ВИДЕО)
+        // ФИНАЛЬНАЯ БАЗА ДАННЫХ (ОПЦИИ ТЕПЕРЬ 1, 2, 3, 4)
         const quizData = [
             {
                 title: "Video 1: The Newspaper",
@@ -98,12 +98,12 @@
                 startTime: 4, 
                 endTime: 15,  
                 questions: [
-                    { text: "Who is on the couch?", options: { A: "Mom", B: "Dad", C: "Bluey", D: "Bingo" }, correct: "B", level: 1 },
-                    { text: "What do the kids want?", options: { A: "A song", B: "A toy", C: "An apple", D: "A book" }, correct: "A", level: 1 },
-                    { text: "Does Dad say 'Yes'?", options: { A: "Yes", B: "No", C: "He is sleeping", D: "He is angry" }, correct: "A", level: 1 },
-                    { text: "How does Dad feel at the beginning?", options: { A: "Relaxed", B: "Angry", C: "Scared", D: "Sad" }, correct: "A", level: 2 },
-                    { text: "What is Dad reading?", options: { A: "A newspaper", B: "A book", C: "A magazine", D: "A comic" }, correct: "A", level: 2 },
-                    { text: "What shouldn't the song be?", options: { A: "Annoying", B: "Fast", C: "Long", D: "Sad" }, correct: "A", level: 2 }
+                    { text: "Who is on the couch?", options: { 1: "Mom", 2: "Dad", 3: "Bluey", 4: "Bingo" }, correct: "2", level: 1 },
+                    { text: "What do the kids want?", options: { 1: "A song", 2: "A toy", 3: "An apple", 4: "A book" }, correct: "1", level: 1 },
+                    { text: "Does Dad say 'Yes'?", options: { 1: "Yes", 2: "No", 3: "He is sleeping", 4: "He is angry" }, correct: "1", level: 1 },
+                    { text: "How does Dad feel at the beginning?", options: { 1: "Relaxed", 2: "Angry", 3: "Scared", 4: "Sad" }, correct: "1", level: 2 },
+                    { text: "What is Dad reading?", options: { 1: "A newspaper", 2: "A book", 3: "A magazine", 4: "A comic" }, correct: "1", level: 2 },
+                    { text: "What shouldn't the song be?", options: { 1: "Annoying", 2: "Fast", 3: "Long", 4: "Sad" }, correct: "1", level: 2 }
                 ]
             },
             {
@@ -112,12 +112,12 @@
                 startTime: 15, 
                 endTime: 32,  
                 questions: [
-                    { text: "What is the name of the song?", options: { A: "Burger Cat", B: "Burger Dog", C: "Hot Dog", D: "Pizza" }, correct: "B", level: 1 },
-                    { text: "What does the burger have inside?", options: { A: "Pickles and cheese", B: "Fish and chips", C: "Apple and banana", D: "Bread and butter" }, correct: "A", level: 1 },
-                    { text: "What are the kids doing?", options: { A: "Sleeping", B: "Dancing", C: "Reading", D: "Eating" }, correct: "B", level: 1 },
-                    { text: "Who asks: 'What's it called?'", options: { A: "Bluey", B: "Bingo", C: "Dad", D: "Mom" }, correct: "C", level: 2 },
-                    { text: "How does Dad react when he hears the song?", options: { A: "He says it's not annoying", B: "He turns it off", C: "He gets angry", D: "He sings loudly" }, correct: "A", level: 2 },
-                    { text: "What is NOT mentioned in the song?", options: { A: "Cheese", B: "Pickles", C: "Tomatoes", D: "Sugar" }, correct: "C", level: 2 }
+                    { text: "What is the name of the song?", options: { 1: "Burger Cat", 2: "Burger Dog", 3: "Hot Dog", 4: "Pizza" }, correct: "2", level: 1 },
+                    { text: "What does the burger have inside?", options: { 1: "Pickles and cheese", 2: "Fish and chips", 3: "Apple and banana", 4: "Bread and butter" }, correct: "1", level: 1 },
+                    { text: "What are the kids doing?", options: { 1: "Sleeping", 2: "Dancing", 3: "Reading", 4: "Eating" }, correct: "2", level: 1 },
+                    { text: "Who asks: 'What's it called?'", options: { 1: "Bluey", 2: "Bingo", 3: "Dad", 4: "Mom" }, correct: "3", level: 2 },
+                    { text: "How does Dad react when he hears the song?", options: { 1: "He says it's not annoying", 2: "He turns it off", 3: "He gets angry", 4: "He sings loudly" }, correct: "1", level: 2 },
+                    { text: "What is NOT mentioned in the song?", options: { 1: "Cheese", 2: "Pickles", 3: "Tomatoes", 4: "Sugar" }, correct: "3", level: 2 }
                 ]
             },
             {
@@ -126,12 +126,12 @@
                 startTime: 45, 
                 endTime: 58,  
                 questions: [
-                    { text: "What does Dad say about his phone?", options: { A: "It is broken", B: "It is out of battery", C: "It is lost", D: "It is new" }, correct: "B", level: 1 },
-                    { text: "What color is the phone screen?", options: { A: "Red", B: "Green", C: "Black", D: "White" }, correct: "C", level: 1 },
-                    { text: "Does Bluey believe Dad?", options: { A: "Yes", B: "No", C: "She is sleeping", D: "She is crying" }, correct: "B", level: 1 },
-                    { text: "Why does Dad say his phone is out of battery?", options: { A: "He wants to stop playing the song", B: "The phone is really broken", C: "He wants to go to sleep", D: "He is playing a game" }, correct: "A", level: 2 },
-                    { text: "What does Bluey say to Dad?", options: { A: "No, it hasn't.", B: "Yes, it has.", C: "I want a new phone.", D: "Let's go to sleep." }, correct: "A", level: 2 },
-                    { text: "What does Bluey see on the phone?", options: { A: "A black screen", B: "A funny video", C: "A new game", D: "A red battery" }, correct: "A", level: 2 }
+                    { text: "What does Dad say about his phone?", options: { 1: "It is broken", 2: "It is out of battery", 3: "It is lost", 4: "It is new" }, correct: "2", level: 1 },
+                    { text: "What color is the phone screen?", options: { 1: "Red", 2: "Green", 3: "Black", 4: "White" }, correct: "3", level: 1 },
+                    { text: "Does Bluey believe Dad?", options: { 1: "Yes", 2: "No", 3: "She is sleeping", 4: "She is crying" }, correct: "2", level: 1 },
+                    { text: "Why does Dad say his phone is out of battery?", options: { 1: "He wants to stop playing the song", 2: "The phone is really broken", 3: "He wants to go to sleep", 4: "He is playing a game" }, correct: "1", level: 2 },
+                    { text: "What does Bluey say to Dad?", options: { 1: "No, it hasn't.", 2: "Yes, it has.", 3: "I want a new phone.", 4: "Let's go to sleep." }, correct: "1", level: 2 },
+                    { text: "What does Bluey see on the phone?", options: { 1: "A black screen", 2: "A funny video", 3: "A new game", 4: "A red battery" }, correct: "1", level: 2 }
                 ]
             },
             {
@@ -140,12 +140,12 @@
                 startTime: 77, 
                 endTime: 92,  
                 questions: [
-                    { text: "What is Mom doing?", options: { A: "Cooking", B: "Calling on the phone", C: "Sleeping", D: "Reading" }, correct: "B", level: 1 },
-                    { text: "What does Dad say to Bluey?", options: { A: "I love you.", B: "I would never lie to you.", C: "Let's go to sleep.", D: "Give me the phone." }, correct: "B", level: 1 },
-                    { text: "Does Dad say he is lying?", options: { A: "Yes", B: "No", C: "He is sleeping", D: "He is crying" }, correct: "A", level: 1 },
-                    { text: "What does Mom ask Dad?", options: { A: "Are you playing a game?", B: "Are you lying to your children again?", C: "Where is your phone?", D: "Are you sleeping?" }, correct: "B", level: 2 },
-                    { text: "What does Dad promise Bluey before Mom calls?", options: { A: "I would never lie to you.", B: "I will buy you a toy.", C: "I am very tired.", D: "Let's eat a burger." }, correct: "A", level: 2 },
-                    { text: "Why does Mom say 'again'?", options: { A: "Because Dad lies to the kids often.", B: "Because Dad is sleeping.", C: "Because the phone is broken.", D: "Because Bluey is crying." }, correct: "A", level: 2 }
+                    { text: "What is Mom doing?", options: { 1: "Cooking", 2: "Calling on the phone", 3: "Sleeping", 4: "Reading" }, correct: "2", level: 1 },
+                    { text: "What does Dad say to Bluey?", options: { 1: "I love you.", 2: "I would never lie to you.", 3: "Let's go to sleep.", 4: "Give me the phone." }, correct: "2", level: 1 },
+                    { text: "Does Dad say he is lying?", options: { 1: "Yes", 2: "No", 3: "He is sleeping", 4: "He is crying" }, correct: "1", level: 1 },
+                    { text: "What does Mom ask Dad?", options: { 1: "Are you playing a game?", 2: "Are you lying to your children again?", 3: "Where is your phone?", 4: "Are you sleeping?" }, correct: "2", level: 2 },
+                    { text: "What does Dad promise Bluey before Mom calls?", options: { 1: "I would never lie to you.", 2: "I will buy you a toy.", 3: "I am very tired.", 4: "Let's eat a burger." }, correct: "1", level: 2 },
+                    { text: "Why does Mom say 'again'?", options: { 1: "Because Dad lies to the kids often.", 2: "Because Dad is sleeping.", 3: "Because the phone is broken.", 4: "Because Bluey is crying." }, correct: "1", level: 2 }
                 ]
             }
         ];
