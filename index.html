@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>English Video Quiz</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #1a1a2e; color: white; margin: 0; padding: 0; padding-bottom: 50px; text-align: center; }
+        body { font-family: Arial, sans-serif; background-color: #1a1a2e; color: white; margin: 0; padding: 0; padding-bottom: 50px; text-align: center; scroll-behavior: smooth; }
         
         /* Шапка с командами и уровнями */
         .scoreboard { position: sticky; top: 0; background-color: #16213e; border-bottom: 4px solid #e94560; box-shadow: 0 4px 15px rgba(0,0,0,0.8); z-index: 1000; padding: 10px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; }
@@ -21,7 +21,35 @@
         .level-btn.active { background-color: #e94560; box-shadow: 0 0 10px #e94560; }
         
         .settings-btn { background-color: #e94560; color: white; border: none; padding: 10px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; }
-        
+
+        /* --- КНОПКИ ПРОКРУТКИ --- */
+        .scroll-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1500;
+        }
+        .scroll-btn {
+            width: 60px;
+            height: 60px;
+            background-color: #e94560;
+            color: white;
+            border: 3px solid #ffffff;
+            border-radius: 50%;
+            font-size: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: 0.2s;
+        }
+        .scroll-btn:hover { background-color: #c9344b; transform: scale(1.1); }
+        .scroll-btn:active { transform: scale(0.9); }
+
         /* Модальное окно настроек */
         .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; }
         .modal-content { background-color: #16213e; padding: 20px; border-radius: 15px; width: 90%; max-width: 400px; border: 3px solid #e94560; }
@@ -61,6 +89,12 @@
         <button class="settings-btn" onclick="openSettings()">⚙️ Edit Teams</button>
     </div>
 
+    <!-- Кнопки прокрутки -->
+    <div class="scroll-controls">
+        <button class="scroll-btn" onclick="scrollUp()">⬆</button>
+        <button class="scroll-btn" onclick="scrollDown()">⬇</button>
+    </div>
+
     <div class="modal" id="settingsModal">
         <div class="modal-content">
             <h2>Team Settings</h2>
@@ -76,6 +110,15 @@
     <div class="container" id="quizContainer"></div>
 
     <script>
+        // --- ФУНКЦИИ ПРОКРУТКИ ---
+        function scrollUp() {
+            window.scrollBy({ top: -window.innerHeight * 0.8, behavior: 'smooth' });
+        }
+        function scrollDown() {
+            window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
+        }
+
+        // --- ОСТАЛЬНАЯ ЛОГИКА ---
         let currentLevelFilter = 0; // По умолчанию L0
 
         function setLevel(level) {
@@ -93,7 +136,6 @@
             renderQuiz();
         }
 
-        // ФИНАЛЬНАЯ БАЗА ДАННЫХ (L0, L1, L2)
         const quizData = [
             {
                 title: "Video 1: The Newspaper",
@@ -101,15 +143,12 @@
                 startTime: 4, 
                 endTime: 15,  
                 questions: [
-                    // --- L0 ---
                     { text: "Who is on the couch?", options: { 1: "Mom", 2: "Dad", 3: "Boy", 4: "Cat" }, correct: "2", level: 0 },
                     { text: "What is Dad reading?", options: { 1: "A book", 2: "A newspaper", 3: "A phone", 4: "A map" }, correct: "2", level: 0 },
                     { text: "What room is Dad in?", options: { 1: "Living room", 2: "Bedroom", 3: "Kitchen", 4: "Bathroom" }, correct: "1", level: 0 },
-                    // --- L1 ---
                     { text: "Who is on the couch?", options: { 1: "Mom", 2: "Dad", 3: "Bluey", 4: "Bingo" }, correct: "2", level: 1 },
                     { text: "What do the kids want?", options: { 1: "A song", 2: "A toy", 3: "An apple", 4: "A book" }, correct: "1", level: 1 },
                     { text: "Does Dad say 'Yes'?", options: { 1: "Yes", 2: "No", 3: "He is sleeping", 4: "He is angry" }, correct: "1", level: 1 },
-                    // --- L2 ---
                     { text: "How does Dad feel at the beginning?", options: { 1: "Relaxed", 2: "Angry", 3: "Scared", 4: "Sad" }, correct: "1", level: 2 },
                     { text: "What is Dad reading?", options: { 1: "A newspaper", 2: "A book", 3: "A magazine", 4: "A comic" }, correct: "1", level: 2 },
                     { text: "What shouldn't the song be?", options: { 1: "Annoying", 2: "Fast", 3: "Long", 4: "Sad" }, correct: "1", level: 2 }
@@ -121,15 +160,12 @@
                 startTime: 15, 
                 endTime: 32,  
                 questions: [
-                    // --- L0 ---
                     { text: "What is the song?", options: { 1: "Cat Dog", 2: "Burger Dog", 3: "Hot Dog", 4: "Big Dog" }, correct: "2", level: 0 },
                     { text: "What is inside the burger?", options: { 1: "Cheese", 2: "Fish", 3: "Apple", 4: "Chicken" }, correct: "1", level: 0 },
                     { text: "What are the kids doing?", options: { 1: "Sleeping", 2: "Dancing", 3: "Reading", 4: "Eating" }, correct: "2", level: 0 },
-                    // --- L1 ---
                     { text: "What is the name of the song?", options: { 1: "Burger Cat", 2: "Burger Dog", 3: "Hot Dog", 4: "Pizza" }, correct: "2", level: 1 },
                     { text: "What does the burger have inside?", options: { 1: "Pickles and cheese", 2: "Fish and chips", 3: "Apple and banana", 4: "Bread and butter" }, correct: "1", level: 1 },
                     { text: "What are the kids doing?", options: { 1: "Sleeping", 2: "Dancing", 3: "Reading", 4: "Eating" }, correct: "2", level: 1 },
-                    // --- L2 ---
                     { text: "Who asks: 'What's it called?'", options: { 1: "Bluey", 2: "Bingo", 3: "Dad", 4: "Mom" }, correct: "3", level: 2 },
                     { text: "How does Dad react when he hears the song?", options: { 1: "He says it's not annoying", 2: "He turns it off", 3: "He gets angry", 4: "He sings loudly" }, correct: "1", level: 2 },
                     { text: "What is NOT mentioned in the song?", options: { 1: "Cheese", 2: "Pickles", 3: "Tomatoes", 4: "Sugar" }, correct: "3", level: 2 }
@@ -141,15 +177,12 @@
                 startTime: 45, 
                 endTime: 58,  
                 questions: [
-                    // --- L0 ---
                     { text: "What color is the phone?", options: { 1: "White", 2: "Red", 3: "Black", 4: "Green" }, correct: "3", level: 0 },
                     { text: "Is the phone dead?", options: { 1: "Maybe", 2: "Hot", 3: "No", 4: "Yes" }, correct: "4", level: 0 },
                     { text: "What color is the couch?", options: { 1: "Red", 2: "Blue", 3: "Green", 4: "Yellow" }, correct: "1", level: 0 },
-                    // --- L1 ---
                     { text: "What does Dad say about his phone?", options: { 1: "It is broken", 2: "It is out of battery", 3: "It is lost", 4: "It is new" }, correct: "2", level: 1 },
                     { text: "What color is the phone screen?", options: { 1: "Red", 2: "Green", 3: "Black", 4: "White" }, correct: "3", level: 1 },
                     { text: "Does Bluey believe Dad?", options: { 1: "Yes", 2: "No", 3: "She is sleeping", 4: "She is crying" }, correct: "2", level: 1 },
-                    // --- L2 ---
                     { text: "Why does Dad say his phone is out of battery?", options: { 1: "He wants to stop playing the song", 2: "The phone is really broken", 3: "He wants to go to sleep", 4: "He is playing a game" }, correct: "1", level: 2 },
                     { text: "What does Bluey say to Dad?", options: { 1: "No, it hasn't.", 2: "Yes, it has.", 3: "I want a new phone.", 4: "Let's go to sleep." }, correct: "1", level: 2 },
                     { text: "What does Bluey see on the phone?", options: { 1: "A black screen", 2: "A funny video", 3: "A new game", 4: "A red battery" }, correct: "1", level: 2 }
@@ -161,15 +194,12 @@
                 startTime: 77, 
                 endTime: 92,  
                 questions: [
-                    // --- L0 ---
                     { text: "Who calls Dad?", options: { 1: "Mom", 2: "Bingo", 3: "A friend", 4: "A teacher" }, correct: "1", level: 0 },
                     { text: "Is Dad lying?", options: { 1: "Maybe", 2: "Sleeping", 3: "No", 4: "Yes" }, correct: "4", level: 0 },
                     { text: "Is Mom happy?", options: { 1: "Yes", 2: "No", 3: "Hungry", 4: "Sleeping" }, correct: "2", level: 0 },
-                    // --- L1 ---
                     { text: "What is Mom doing?", options: { 1: "Cooking", 2: "Calling on the phone", 3: "Sleeping", 4: "Reading" }, correct: "2", level: 1 },
                     { text: "What does Dad say to Bluey?", options: { 1: "I love you.", 2: "I would never lie to you.", 3: "Let's go to sleep.", 4: "Give me the phone." }, correct: "2", level: 1 },
                     { text: "Does Dad say he is lying?", options: { 1: "Yes", 2: "No", 3: "He is sleeping", 4: "He is crying" }, correct: "1", level: 1 },
-                    // --- L2 ---
                     { text: "What does Mom ask Dad?", options: { 1: "Are you playing a game?", 2: "Are you lying to your children again?", 3: "Where is your phone?", 4: "Are you sleeping?" }, correct: "2", level: 2 },
                     { text: "What does Dad promise Bluey before Mom calls?", options: { 1: "I would never lie to you.", 2: "I will buy you a toy.", 3: "I am very tired.", 4: "Let's eat a burger." }, correct: "1", level: 2 },
                     { text: "Why does Mom say 'again'?", options: { 1: "Because Dad lies to the kids often.", 2: "Because Dad is sleeping.", 3: "Because the phone is broken.", 4: "Because Bluey is crying." }, correct: "1", level: 2 }
@@ -177,7 +207,6 @@
             }
         ];
 
-        // Логика команд
         let teams = JSON.parse(localStorage.getItem('videoQuizTeams')) || [
             { name: "Red", score: 0 },
             { name: "Blue", score: 0 }
@@ -207,7 +236,6 @@
         function updateTeamName(index, value) { teams[index].name = value; saveData(); }
         function saveData() { localStorage.setItem('videoQuizTeams', JSON.stringify(teams)); }
 
-        // Настройки
         function openSettings() {
             const container = document.getElementById('teamInputsContainer');
             container.innerHTML = '';
@@ -236,7 +264,6 @@
             closeSettings();
         }
 
-        // Викторина
         function renderQuiz() {
             const container = document.getElementById('quizContainer');
             container.innerHTML = '';
