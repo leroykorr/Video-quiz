@@ -8,7 +8,6 @@
         
         /* Шапка с командами и уровнями */
         .scoreboard { position: sticky; top: 0; background-color: #16213e; border-bottom: 4px solid #e94560; box-shadow: 0 4px 15px rgba(0,0,0,0.8); z-index: 1000; padding: 10px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; }
-        
         .team-card { background-color: #34495e; padding: 8px; border-radius: 10px; display: flex; align-items: center; gap: 5px; }
         .team-name { width: 70px; font-size: 16px; font-weight: bold; background: transparent; border: none; color: #f1c40f; text-align: center; border-bottom: 1px dashed #7f8c8d; outline: none;}
         .team-score { width: 40px; font-size: 20px; font-weight: bold; background: transparent; border: none; color: white; text-align: center; outline: none;}
@@ -19,34 +18,11 @@
         .level-panel { display: flex; gap: 5px; background-color: #0f3460; padding: 5px; border-radius: 8px; }
         .level-btn { padding: 8px 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; color: white; background-color: #533483; transition: 0.2s; }
         .level-btn.active { background-color: #e94560; box-shadow: 0 0 10px #e94560; }
-        
         .settings-btn { background-color: #e94560; color: white; border: none; padding: 10px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; }
 
-        /* --- КНОПКИ ПРОКРУТКИ --- */
-        .scroll-controls {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            z-index: 1500;
-        }
-        .scroll-btn {
-            width: 60px;
-            height: 60px;
-            background-color: #e94560;
-            color: white;
-            border: 3px solid #ffffff;
-            border-radius: 50%;
-            font-size: 30px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: 0.2s;
-        }
+        /* --- КНОПКИ ПРОКРУТКИ (шаг 40%) --- */
+        .scroll-controls { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1500; }
+        .scroll-btn { width: 60px; height: 60px; background-color: #e94560; color: white; border: 3px solid #ffffff; border-radius: 50%; font-size: 30px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; transition: 0.2s; }
         .scroll-btn:hover { background-color: #c9344b; transform: scale(1.1); }
         .scroll-btn:active { transform: scale(0.9); }
 
@@ -68,13 +44,37 @@
         .video-controls { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
         .video-controls button { padding: 10px 15px; font-size: 14px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; color: white; background-color: #2ecc71; }
         
+        /* Вопросы */
         .question-block { background-color: #f5f5f5; color: #16213e; padding: 15px; border-radius: 15px; margin-bottom: 15px; text-align: left; }
-        .question-text { font-size: 18px; font-weight: bold; margin-bottom: 10px; }
-        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .option-btn { background-color: #ecf0f1; border: 2px solid #bdc3c7; padding: 10px; border-radius: 10px; font-size: 16px; font-weight: bold; color: #2c3e50; cursor: pointer; text-align: left; display: flex; align-items: center; gap: 8px; }
-        .option-btn .letter { background-color: #34495e; color: white; width: 30px; height: 30px; display: flex; justify-content: center; align-items: center; border-radius: 50%; font-size: 16px; }
-        .option-btn.correct { background-color: #2ecc71; border-color: #27ae60; color: white; }
-        .option-btn.wrong { background-color: #e74c3c; border-color: #c0392b; color: white; opacity: 0.7; }
+        .q-text-en { font-size: 20px; font-weight: bold; margin-bottom: 5px; }
+        .q-text-zh { font-size: 16px; color: #34495e; margin-bottom: 2px; }
+        .q-text-py { font-size: 12px; color: #7f8c8d; font-style: italic; margin-bottom: 15px; }
+
+        .options-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        .options-grid.four-options { grid-template-columns: 1fr 1fr; }
+        
+        .option-btn { 
+            background-color: #ecf0f1; border: 2px solid #bdc3c7; padding: 10px; border-radius: 10px; 
+            cursor: pointer; text-align: left; display: flex; align-items: center; gap: 10px; 
+            transition: background-color 0.2s; width: 100%; box-sizing: border-box;
+        }
+        .option-btn:hover { background-color: #e8f4fd; }
+        
+        .option-letter { background-color: #34495e; color: white; min-width: 30px; height: 30px; display: flex; justify-content: center; align-items: center; border-radius: 50%; font-size: 16px; font-weight: bold; }
+        .option-text-container { display: flex; flex-direction: column; }
+        
+        .opt-en { font-size: 18px; font-weight: bold; color: #2c3e50; }
+        .opt-zh { font-size: 14px; color: #34495e; }
+        .opt-py { font-size: 11px; color: #7f8c8d; font-style: italic; }
+
+        .option-btn.correct { background-color: #2ecc71; border-color: #27ae60; }
+        .option-btn.correct .opt-en, .option-btn.correct .opt-zh, .option-btn.correct .opt-py { color: white; }
+        .option-btn.correct .option-letter { background-color: white; color: #2ecc71; }
+
+        .option-btn.wrong { background-color: #e74c3c; border-color: #c0392b; opacity: 0.8; }
+        .option-btn.wrong .opt-en, .option-btn.wrong .opt-zh, .option-btn.wrong .opt-py { color: white; }
+        .option-btn.wrong .option-letter { background-color: white; color: #e74c3c; }
+
         .option-btn:disabled { cursor: not-allowed; }
     </style>
 </head>
@@ -89,7 +89,6 @@
         <button class="settings-btn" onclick="openSettings()">⚙️ Edit Teams</button>
     </div>
 
-    <!-- Кнопки прокрутки -->
     <div class="scroll-controls">
         <button class="scroll-btn" onclick="scrollUp()">⬆</button>
         <button class="scroll-btn" onclick="scrollDown()">⬇</button>
@@ -110,16 +109,10 @@
     <div class="container" id="quizContainer"></div>
 
     <script>
-        // --- ФУНКЦИИ ПРОКРУТКИ ---
-        function scrollUp() {
-            window.scrollBy({ top: -window.innerHeight * 0.8, behavior: 'smooth' });
-        }
-        function scrollDown() {
-            window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
-        }
+        function scrollUp() { window.scrollBy({ top: -window.innerHeight * 0.4, behavior: 'smooth' }); }
+        function scrollDown() { window.scrollBy({ top: window.innerHeight * 0.4, behavior: 'smooth' }); }
 
-        // --- ОСТАЛЬНАЯ ЛОГИКА ---
-        let currentLevelFilter = 0; // По умолчанию L0
+        let currentLevelFilter = 0;
 
         function setLevel(level) {
             currentLevelFilter = level;
@@ -136,88 +129,175 @@
             renderQuiz();
         }
 
+        // БАЗА ДАННЫХ (L0 с китайским и 2 вариантами, L1/L2 чистый английский по 4 варианта)
         const quizData = [
             {
                 title: "Video 1: The Newspaper",
                 youtubeId: "mQz3G0G3XHs", 
-                startTime: 4, 
-                endTime: 15,  
+                startTime: 4, endTime: 15,  
                 questions: [
-                    { text: "Who is on the couch?", options: { 1: "Mom", 2: "Dad", 3: "Boy", 4: "Cat" }, correct: "2", level: 0 },
-                    { text: "What is Dad reading?", options: { 1: "A book", 2: "A newspaper", 3: "A phone", 4: "A map" }, correct: "2", level: 0 },
-                    { text: "What room is Dad in?", options: { 1: "Living room", 2: "Bedroom", 3: "Kitchen", 4: "Bathroom" }, correct: "1", level: 0 },
-                    { text: "Who is on the couch?", options: { 1: "Mom", 2: "Dad", 3: "Bluey", 4: "Bingo" }, correct: "2", level: 1 },
-                    { text: "What do the kids want?", options: { 1: "A song", 2: "A toy", 3: "An apple", 4: "A book" }, correct: "1", level: 1 },
-                    { text: "Does Dad say 'Yes'?", options: { 1: "Yes", 2: "No", 3: "He is sleeping", 4: "He is angry" }, correct: "1", level: 1 },
-                    { text: "How does Dad feel at the beginning?", options: { 1: "Relaxed", 2: "Angry", 3: "Scared", 4: "Sad" }, correct: "1", level: 2 },
-                    { text: "What is Dad reading?", options: { 1: "A newspaper", 2: "A book", 3: "A magazine", 4: "A comic" }, correct: "1", level: 2 },
-                    { text: "What shouldn't the song be?", options: { 1: "Annoying", 2: "Fast", 3: "Long", 4: "Sad" }, correct: "1", level: 2 }
+                    // --- L0 ---
+                    { 
+                        level: 0,
+                        en: "Who is on the couch?", zh: "誰在沙發上？", py: "Shéi zài shāfā shàng?",
+                        options: [
+                            { key: 1, en: "Mom", zh: "妈妈", py: "māma" },
+                            { key: 2, en: "Dad", zh: "爸爸", py: "bàba", correct: true }
+                        ]
+                    },
+                    { 
+                        level: 0,
+                        en: "What is Dad reading?", zh: "爸爸在看什麼？", py: "Bàba zài kàn shénme?",
+                        options: [
+                            { key: 1, en: "A book", zh: "书", py: "shū" },
+                            { key: 2, en: "A newspaper", zh: "报纸", py: "bàozhǐ", correct: true }
+                        ]
+                    },
+                    { 
+                        level: 0,
+                        en: "What room is Dad in?", zh: "爸爸在哪個房間？", py: "Bàba zài nǎ ge fángjiān?",
+                        options: [
+                            { key: 1, en: "Living room", zh: "客厅", py: "kètīng", correct: true },
+                            { key: 2, en: "Kitchen", zh: "厨房", py: "chúfáng" }
+                        ]
+                    },
+                    // --- L1 ---
+                    { level: 1, en: "Who is on the couch?", options: [ {key:1, en:"Mom"}, {key:2, en:"Dad", correct:true}, {key:3, en:"Bluey"}, {key:4, en:"Bingo"} ] },
+                    { level: 1, en: "What do the kids want?", options: [ {key:1, en:"A song", correct:true}, {key:2, en:"A toy"}, {key:3, en:"An apple"}, {key:4, en:"A book"} ] },
+                    { level: 1, en: "Does Dad say 'Yes'?", options: [ {key:1, en:"Yes", correct:true}, {key:2, en:"No"}, {key:3, en:"He is sleeping"}, {key:4, en:"He is angry"} ] },
+                    // --- L2 ---
+                    { level: 2, en: "How does Dad feel at the beginning?", options: [ {key:1, en:"Relaxed", correct:true}, {key:2, en:"Angry"}, {key:3, en:"Scared"}, {key:4, en:"Sad"} ] },
+                    { level: 2, en: "What is Dad reading?", options: [ {key:1, en:"A newspaper", correct:true}, {key:2, en:"A book"}, {key:3, en:"A magazine"}, {key:4, en:"A comic"} ] },
+                    { level: 2, en: "What shouldn't the song be?", options: [ {key:1, en:"Annoying", correct:true}, {key:2, en:"Fast"}, {key:3, en:"Long"}, {key:4, en:"Sad"} ] }
                 ]
             },
             {
                 title: "Video 2: Burger Dog",
                 youtubeId: "mQz3G0G3XHs", 
-                startTime: 15, 
-                endTime: 32,  
+                startTime: 15, endTime: 32,  
                 questions: [
-                    { text: "What is the song?", options: { 1: "Cat Dog", 2: "Burger Dog", 3: "Hot Dog", 4: "Big Dog" }, correct: "2", level: 0 },
-                    { text: "What is inside the burger?", options: { 1: "Cheese", 2: "Fish", 3: "Apple", 4: "Chicken" }, correct: "1", level: 0 },
-                    { text: "What are the kids doing?", options: { 1: "Sleeping", 2: "Dancing", 3: "Reading", 4: "Eating" }, correct: "2", level: 0 },
-                    { text: "What is the name of the song?", options: { 1: "Burger Cat", 2: "Burger Dog", 3: "Hot Dog", 4: "Pizza" }, correct: "2", level: 1 },
-                    { text: "What does the burger have inside?", options: { 1: "Pickles and cheese", 2: "Fish and chips", 3: "Apple and banana", 4: "Bread and butter" }, correct: "1", level: 1 },
-                    { text: "What are the kids doing?", options: { 1: "Sleeping", 2: "Dancing", 3: "Reading", 4: "Eating" }, correct: "2", level: 1 },
-                    { text: "Who asks: 'What's it called?'", options: { 1: "Bluey", 2: "Bingo", 3: "Dad", 4: "Mom" }, correct: "3", level: 2 },
-                    { text: "How does Dad react when he hears the song?", options: { 1: "He says it's not annoying", 2: "He turns it off", 3: "He gets angry", 4: "He sings loudly" }, correct: "1", level: 2 },
-                    { text: "What is NOT mentioned in the song?", options: { 1: "Cheese", 2: "Pickles", 3: "Tomatoes", 4: "Sugar" }, correct: "3", level: 2 }
+                    // --- L0 ---
+                    { 
+                        level: 0,
+                        en: "What is the song?", zh: "這首歌是什麼？", py: "Zhè shǒu gē shì shénme?",
+                        options: [
+                            { key: 1, en: "Cat Dog", zh: "猫狗", py: "māo gǒu" },
+                            { key: 2, en: "Burger Dog", zh: "汉堡狗", py: "hànbǎo gǒu", correct: true }
+                        ]
+                    },
+                    { 
+                        level: 0,
+                        en: "What is inside the burger?", zh: "漢堡裡有什麼？", py: "Hànbǎo lǐ yǒu shénme?",
+                        options: [
+                            { key: 1, en: "Cheese", zh: "奶酪", py: "nǎilào", correct: true },
+                            { key: 2, en: "Fish", zh: "鱼", py: "yú" }
+                        ]
+                    },
+                    { 
+                        level: 0,
+                        en: "What are the kids doing?", zh: "孩子們在做什麼？", py: "Háizimen zài zuò shénme?",
+                        options: [
+                            { key: 1, en: "Sleeping", zh: "睡觉", py: "shuìjiào" },
+                            { key: 2, en: "Dancing", zh: "跳舞", py: "tiàowǔ", correct: true }
+                        ]
+                    },
+                    // --- L1 ---
+                    { level: 1, en: "What is the name of the song?", options: [ {key:1, en:"Burger Cat"}, {key:2, en:"Burger Dog", correct:true}, {key:3, en:"Hot Dog"}, {key:4, en:"Pizza"} ] },
+                    { level: 1, en: "What does the burger have inside?", options: [ {key:1, en:"Pickles and cheese", correct:true}, {key:2, en:"Fish and chips"}, {key:3, en:"Apple and banana"}, {key:4, en:"Bread and butter"} ] },
+                    { level: 1, en: "What are the kids doing?", options: [ {key:1, en:"Sleeping"}, {key:2, en:"Dancing", correct:true}, {key:3, en:"Reading"}, {key:4, en:"Eating"} ] },
+                    // --- L2 ---
+                    { level: 2, en: "Who asks: 'What's it called?'", options: [ {key:1, en:"Bluey"}, {key:2, en:"Bingo"}, {key:3, en:"Dad", correct:true}, {key:4, en:"Mom"} ] },
+                    { level: 2, en: "How does Dad react when he hears the song?", options: [ {key:1, en:"He says it's not annoying", correct:true}, {key:2, en:"He turns it off"}, {key:3, en:"He gets angry"}, {key:4, en:"He sings loudly"} ] },
+                    { level: 2, en: "What is NOT mentioned in the song?", options: [ {key:1, en:"Cheese"}, {key:2, en:"Pickles"}, {key:3, en:"Tomatoes", correct:true}, {key:4, en:"Sugar"} ] }
                 ]
             },
             {
                 title: "Video 3: Out of Battery",
                 youtubeId: "mQz3G0G3XHs", 
-                startTime: 45, 
-                endTime: 58,  
+                startTime: 45, endTime: 58,  
                 questions: [
-                    { text: "What color is the phone?", options: { 1: "White", 2: "Red", 3: "Black", 4: "Green" }, correct: "3", level: 0 },
-                    { text: "Is the phone dead?", options: { 1: "Maybe", 2: "Hot", 3: "No", 4: "Yes" }, correct: "4", level: 0 },
-                    { text: "What color is the couch?", options: { 1: "Red", 2: "Blue", 3: "Green", 4: "Yellow" }, correct: "1", level: 0 },
-                    { text: "What does Dad say about his phone?", options: { 1: "It is broken", 2: "It is out of battery", 3: "It is lost", 4: "It is new" }, correct: "2", level: 1 },
-                    { text: "What color is the phone screen?", options: { 1: "Red", 2: "Green", 3: "Black", 4: "White" }, correct: "3", level: 1 },
-                    { text: "Does Bluey believe Dad?", options: { 1: "Yes", 2: "No", 3: "She is sleeping", 4: "She is crying" }, correct: "2", level: 1 },
-                    { text: "Why does Dad say his phone is out of battery?", options: { 1: "He wants to stop playing the song", 2: "The phone is really broken", 3: "He wants to go to sleep", 4: "He is playing a game" }, correct: "1", level: 2 },
-                    { text: "What does Bluey say to Dad?", options: { 1: "No, it hasn't.", 2: "Yes, it has.", 3: "I want a new phone.", 4: "Let's go to sleep." }, correct: "1", level: 2 },
-                    { text: "What does Bluey see on the phone?", options: { 1: "A black screen", 2: "A funny video", 3: "A new game", 4: "A red battery" }, correct: "1", level: 2 }
+                    // --- L0 ---
+                    { 
+                        level: 0,
+                        en: "What color is the phone?", zh: "手機是什麼顏色？", py: "Shǒujī shì shénme yánsè?",
+                        options: [
+                            { key: 1, en: "White", zh: "白色", py: "báisè" },
+                            { key: 2, en: "Black", zh: "黑色", py: "hēisè", correct: true }
+                        ]
+                    },
+                    { 
+                        level: 0,
+                        en: "Is the phone dead?", zh: "手機沒電了嗎？", py: "Shǒujī méi diàn le ma?",
+                        options: [
+                            { key: 1, en: "Maybe", zh: "可能", py: "kěnéng" },
+                            { key: 2, en: "Yes", zh: "是的", py: "shì de", correct: true }
+                        ]
+                    },
+                    { 
+                        level: 0,
+                        en: "What color is the couch?", zh: "沙發是什麼顏色？", py: "Shāfā shì shénme yánsè?",
+                        options: [
+                            { key: 1, en: "Red", zh: "红色", py: "hóngsè", correct: true },
+                            { key: 2, en: "Blue", zh: "蓝色", py: "lánsè" }
+                        ]
+                    },
+                    // --- L1 ---
+                    { level: 1, en: "What does Dad say about his phone?", options: [ {key:1, en:"It is broken"}, {key:2, en:"It is out of battery", correct:true}, {key:3, en:"It is lost"}, {key:4, en:"It is new"} ] },
+                    { level: 1, en: "What color is the phone screen?", options: [ {key:1, en:"Red"}, {key:2, en:"Green"}, {key:3, en:"Black", correct:true}, {key:4, en:"White"} ] },
+                    { level: 1, en: "Does Bluey believe Dad?", options: [ {key:1, en:"Yes"}, {key:2, en:"No", correct:true}, {key:3, en:"She is sleeping"}, {key:4, en:"She is crying"} ] },
+                    // --- L2 ---
+                    { level: 2, en: "Why does Dad say his phone is out of battery?", options: [ {key:1, en:"He wants to stop playing the song", correct:true}, {key:2, en:"The phone is really broken"}, {key:3, en:"He wants to go to sleep"}, {key:4, en:"He is playing a game"} ] },
+                    { level: 2, en: "What does Bluey say to Dad?", options: [ {key:1, en:"No, it hasn't.", correct:true}, {key:2, en:"Yes, it has."}, {key:3, en:"I want a new phone."}, {key:4, en:"Let's go to sleep."} ] },
+                    { level: 2, en: "What does Bluey see on the phone?", options: [ {key:1, en:"A black screen", correct:true}, {key:2, en:"A funny video"}, {key:3, en:"A new game"}, {key:4, en:"A red battery"} ] }
                 ]
             },
             {
                 title: "Video 4: The Lie",
                 youtubeId: "mQz3G0G3XHs", 
-                startTime: 77, 
-                endTime: 92,  
+                startTime: 77, endTime: 92,  
                 questions: [
-                    { text: "Who calls Dad?", options: { 1: "Mom", 2: "Bingo", 3: "A friend", 4: "A teacher" }, correct: "1", level: 0 },
-                    { text: "Is Dad lying?", options: { 1: "Maybe", 2: "Sleeping", 3: "No", 4: "Yes" }, correct: "4", level: 0 },
-                    { text: "Is Mom happy?", options: { 1: "Yes", 2: "No", 3: "Hungry", 4: "Sleeping" }, correct: "2", level: 0 },
-                    { text: "What is Mom doing?", options: { 1: "Cooking", 2: "Calling on the phone", 3: "Sleeping", 4: "Reading" }, correct: "2", level: 1 },
-                    { text: "What does Dad say to Bluey?", options: { 1: "I love you.", 2: "I would never lie to you.", 3: "Let's go to sleep.", 4: "Give me the phone." }, correct: "2", level: 1 },
-                    { text: "Does Dad say he is lying?", options: { 1: "Yes", 2: "No", 3: "He is sleeping", 4: "He is crying" }, correct: "1", level: 1 },
-                    { text: "What does Mom ask Dad?", options: { 1: "Are you playing a game?", 2: "Are you lying to your children again?", 3: "Where is your phone?", 4: "Are you sleeping?" }, correct: "2", level: 2 },
-                    { text: "What does Dad promise Bluey before Mom calls?", options: { 1: "I would never lie to you.", 2: "I will buy you a toy.", 3: "I am very tired.", 4: "Let's eat a burger." }, correct: "1", level: 2 },
-                    { text: "Why does Mom say 'again'?", options: { 1: "Because Dad lies to the kids often.", 2: "Because Dad is sleeping.", 3: "Because the phone is broken.", 4: "Because Bluey is crying." }, correct: "1", level: 2 }
+                    // --- L0 ---
+                    { 
+                        level: 0,
+                        en: "Who calls Dad?", zh: "誰給爸爸打電話？", py: "Shéi gěi bàba dǎ diànhuà?",
+                        options: [
+                            { key: 1, en: "Mom", zh: "妈妈", py: "māma", correct: true },
+                            { key: 2, en: "Bingo", zh: "宾果", py: "bīnguǒ" }
+                        ]
+                    },
+                    { 
+                        level: 0,
+                        en: "Is Dad lying?", zh: "爸爸在撒謊嗎？", py: "Bàba zài sāhuǎng ma?",
+                        options: [
+                            { key: 1, en: "Maybe", zh: "可能", py: "kěnéng" },
+                            { key: 2, en: "Yes", zh: "是的", py: "shì de", correct: true }
+                        ]
+                    },
+                    { 
+                        level: 0,
+                        en: "Is Mom happy?", zh: "媽媽開心嗎？", py: "Māma kāixīn ma?",
+                        options: [
+                            { key: 1, en: "Yes", zh: "是的", py: "shì de" },
+                            { key: 2, en: "No", zh: "不", py: "bù", correct: true }
+                        ]
+                    },
+                    // --- L1 ---
+                    { level: 1, en: "What is Mom doing?", options: [ {key:1, en:"Cooking"}, {key:2, en:"Calling on the phone", correct:true}, {key:3, en:"Sleeping"}, {key:4, en:"Reading"} ] },
+                    { level: 1, en: "What does Dad say to Bluey?", options: [ {key:1, en:"I love you."}, {key:2, en:"I would never lie to you.", correct:true}, {key:3, en:"Let's go to sleep."}, {key:4, en:"Give me the phone."} ] },
+                    { level: 1, en: "Does Dad say he is lying?", options: [ {key:1, en:"Yes", correct:true}, {key:2, en:"No"}, {key:3, en:"He is sleeping"}, {key:4, en:"He is crying"} ] },
+                    // --- L2 ---
+                    { level: 2, en: "What does Mom ask Dad?", options: [ {key:1, en:"Are you playing a game?"}, {key:2, en:"Are you lying to your children again?", correct:true}, {key:3, en:"Where is your phone?"}, {key:4, en:"Are you sleeping?"} ] },
+                    { level: 2, en: "What does Dad promise Bluey before Mom calls?", options: [ {key:1, en:"I would never lie to you.", correct:true}, {key:2, en:"I will buy you a toy."}, {key:3, en:"I am very tired."}, {key:4, en:"Let's eat a burger."} ] },
+                    { level: 2, en: "Why does Mom say 'again'?", options: [ {key:1, en:"Because Dad lies to the kids often.", correct:true}, {key:2, en:"Because Dad is sleeping."}, {key:3, en:"Because the phone is broken."}, {key:4, en:"Because Bluey is crying."} ] }
                 ]
             }
         ];
 
-        let teams = JSON.parse(localStorage.getItem('videoQuizTeams')) || [
-            { name: "Red", score: 0 },
-            { name: "Blue", score: 0 }
-        ];
+        let teams = JSON.parse(localStorage.getItem('videoQuizTeams')) || [{ name: "Red", score: 0 }, { name: "Blue", score: 0 }];
 
         function renderScoreboard() {
             const header = document.getElementById('scoreboard');
-            Array.from(header.children).forEach(child => {
-                if (child.classList.contains('team-card')) header.removeChild(child);
-            });
-
+            Array.from(header.children).forEach(child => { if (child.classList.contains('team-card')) header.removeChild(child); });
             teams.forEach((team, index) => {
                 const card = document.createElement('div');
                 card.className = 'team-card';
@@ -230,38 +310,18 @@
                 header.insertBefore(card, header.querySelector('.settings-btn'));
             });
         }
-
         function changeScore(index, amount) { teams[index].score += amount; saveData(); renderScoreboard(); }
         function updateScore(index, value) { teams[index].score = parseInt(value) || 0; saveData(); renderScoreboard(); }
         function updateTeamName(index, value) { teams[index].name = value; saveData(); }
         function saveData() { localStorage.setItem('videoQuizTeams', JSON.stringify(teams)); }
 
-        function openSettings() {
-            const container = document.getElementById('teamInputsContainer');
-            container.innerHTML = '';
-            teams.forEach(team => addTeamInput(team.name));
-            document.getElementById('settingsModal').style.display = 'flex';
-        }
+        function openSettings() { const c = document.getElementById('teamInputsContainer'); c.innerHTML = ''; teams.forEach(t => addTeamInput(t.name)); document.getElementById('settingsModal').style.display = 'flex'; }
         function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
-        function addTeamInput(value = "") {
-            const container = document.getElementById('teamInputsContainer');
-            const input = document.createElement('input');
-            input.type = 'text'; input.value = value; input.placeholder = "Team Name";
-            input.className = "team-settings-input";
-            input.style.display = "block"; input.style.margin = "0 auto 10px auto";
-            container.appendChild(input);
-        }
+        function addTeamInput(value = "") { const c = document.getElementById('teamInputsContainer'); const i = document.createElement('input'); i.type = 'text'; i.value = value; i.placeholder = "Team Name"; i.className = "team-settings-input"; i.style.display = "block"; i.style.margin = "0 auto 10px auto"; c.appendChild(i); }
         function saveSettings() {
-            const inputs = document.querySelectorAll('.team-settings-input');
-            const newTeams = [];
-            inputs.forEach(input => {
-                if (input.value.trim() !== "") {
-                    const existing = teams.find(t => t.name === input.value.trim());
-                    newTeams.push({ name: input.value.trim(), score: existing ? existing.score : 0 });
-                }
-            });
-            if (newTeams.length > 0) { teams = newTeams; saveData(); renderScoreboard(); }
-            closeSettings();
+            const inputs = document.querySelectorAll('.team-settings-input'); const newTeams = [];
+            inputs.forEach(i => { if (i.value.trim() !== "") { const ex = teams.find(t => t.name === i.value.trim()); newTeams.push({ name: i.value.trim(), score: ex ? ex.score : 0 }); } });
+            if (newTeams.length > 0) { teams = newTeams; saveData(); renderScoreboard(); } closeSettings();
         }
 
         function renderQuiz() {
@@ -279,48 +339,48 @@
                     if (currentLevelFilter !== 'all' && q.level !== currentLevelFilter) return;
 
                     let optHTML = '';
-                    for (const [key, value] of Object.entries(q.options)) {
-                        optHTML += `<button class="option-btn" onclick="checkAnswer(this, '${q.correct}', '${key}')"><span class="letter">${key}</span> ${value}</button>`;
+                    q.options.forEach(opt => {
+                        let textHTML = `<span class="opt-en">${opt.en}</span>`;
+                        if (q.level === 0 && opt.zh) {
+                            textHTML += `<span class="opt-zh">${opt.zh}</span><span class="opt-py">${opt.py}</span>`;
+                        }
+                        optHTML += `<button class="option-btn" onclick="checkAnswer(this, ${opt.correct || false})"><span class="option-letter">${opt.key}</span><div class="option-text-container">${textHTML}</div></button>`;
+                    });
+
+                    let qTextHTML = `<div class="q-text-en">${questionNumber}. ${q.en}</div>`;
+                    if (q.level === 0 && q.zh) {
+                        qTextHTML += `<div class="q-text-zh">${q.zh}</div><div class="q-text-py">${q.py}</div>`;
                     }
-                    let qText = questionNumber + ". " + q.text;
-                    qHTML += `<div class="question-block"><div class="question-text">${qText}</div><div class="options-grid">${optHTML}</div></div>`;
+
+                    let gridClass = q.level === 0 ? 'options-grid' : 'options-grid four-options';
+                    qHTML += `<div class="question-block">${qTextHTML}<div class="${gridClass}">${optHTML}</div></div>`;
                     questionNumber++;
                 });
 
                 section.innerHTML = `
                     <h2 class="video-title">${videoData.title}</h2>
-                    <div class="player-wrapper">
-                        <iframe id="video-${vIndex}" src="https://www.youtube.com/embed/${videoData.youtubeId}?start=${videoData.startTime}&end=${videoData.endTime}&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                    </div>
-                    <div class="video-controls">
-                        <button onclick="reloadVideo(${vIndex})">▶ Replay</button>
-                    </div>
+                    <div class="player-wrapper"><iframe id="video-${vIndex}" src="https://www.youtube.com/embed/${videoData.youtubeId}?start=${videoData.startTime}&end=${videoData.endTime}&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+                    <div class="video-controls"><button onclick="reloadVideo(${vIndex})">▶ Replay</button></div>
                     ${qHTML}
                 `;
                 container.appendChild(section);
             });
         }
 
-        function reloadVideo(index) {
-            const iframe = document.getElementById(`video-${index}`);
-            iframe.src = iframe.src; 
-        }
+        function reloadVideo(index) { const iframe = document.getElementById(`video-${index}`); iframe.src = iframe.src; }
 
-        function checkAnswer(btnElement, correct, selected) {
+        function checkAnswer(btnElement, isCorrect) {
             if (btnElement.parentElement.querySelector('.correct')) return;
             const options = btnElement.parentElement.querySelectorAll('.option-btn');
             options.forEach(opt => {
                 opt.disabled = true;
-                const letter = opt.querySelector('.letter').innerText;
-                if (letter === correct) opt.classList.add('correct');
-                else if (letter === selected) opt.classList.add('wrong');
+                if (opt === btnElement) { if (isCorrect) opt.classList.add('correct'); else opt.classList.add('wrong'); }
+                // Также подсвечиваем правильный, если нажали на неправильный
+                else if (opt.getAttribute('onclick').includes('true')) opt.classList.add('correct');
             });
         }
 
-        window.onload = function() {
-            renderScoreboard();
-            renderQuiz();
-        };
+        window.onload = function() { renderScoreboard(); renderQuiz(); };
     </script>
 </body>
 </html>
