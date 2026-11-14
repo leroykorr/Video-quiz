@@ -6,23 +6,30 @@
     <style>
         body { font-family: Arial, sans-serif; background-color: #1a1a2e; color: white; margin: 0; padding: 0; padding-bottom: 50px; text-align: center; scroll-behavior: smooth; }
         
-        /* Шапка с командами и уровнями */
-        .scoreboard { position: sticky; top: 0; background-color: #16213e; border-bottom: 4px solid #e94560; box-shadow: 0 4px 15px rgba(0,0,0,0.8); z-index: 1000; padding: 10px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; }
-        .team-card { background-color: #34495e; padding: 8px; border-radius: 10px; display: flex; align-items: center; gap: 5px; }
-        .team-name { width: 70px; font-size: 16px; font-weight: bold; background: transparent; border: none; color: #f1c40f; text-align: center; border-bottom: 1px dashed #7f8c8d; outline: none;}
-        .team-score { width: 40px; font-size: 20px; font-weight: bold; background: transparent; border: none; color: white; text-align: center; outline: none;}
-        .btn-plus { background-color: #2ecc71; color: white; border: none; border-radius: 5px; padding: 5px 10px; font-size: 16px; cursor: pointer; }
-        .btn-minus { background-color: #e74c3c; color: white; border: none; border-radius: 5px; padding: 5px 10px; font-size: 16px; cursor: pointer; }
+        /* Шапка с командами, вкладками и уровнями */
+        .scoreboard { position: sticky; top: 0; background-color: #16213e; border-bottom: 4px solid #e94560; box-shadow: 0 4px 15px rgba(0,0,0,0.8); z-index: 1000; padding: 10px; display: flex; flex-direction: column; gap: 10px; }
         
-        /* Панель уровней */
-        .level-panel { display: flex; gap: 5px; background-color: #0f3460; padding: 5px; border-radius: 8px; }
-        .level-btn { padding: 8px 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; color: white; background-color: #533483; transition: 0.2s; }
-        .level-btn.active { background-color: #e94560; box-shadow: 0 0 10px #e94560; }
-        .settings-btn { background-color: #e94560; color: white; border: none; padding: 10px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; }
+        .top-row { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        
+        .tab-panel { display: flex; gap: 10px; }
+        .main-tab { padding: 10px 20px; font-size: 18px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; background-color: #533483; color: white; transition: 0.3s; }
+        .main-tab.active { background-color: #e94560; box-shadow: 0 0 10px #e94560; }
 
-        /* --- КНОПКИ ПРОКРУТКИ (шаг 40%) --- */
+        .level-panel { display: flex; gap: 5px; background-color: #0f3460; padding: 5px; border-radius: 8px; }
+        .level-btn { padding: 8px 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; color: white; background-color: #34495e; transition: 0.2s; }
+        .level-btn.active { background-color: #2ecc71; color: white; box-shadow: 0 0 10px #2ecc71; }
+        
+        .team-container { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; width: 100%; }
+        .team-card { background-color: #34495e; padding: 5px 10px; border-radius: 10px; display: flex; align-items: center; gap: 5px; }
+        .team-name { width: 60px; font-size: 14px; font-weight: bold; background: transparent; border: none; color: #f1c40f; text-align: center; border-bottom: 1px dashed #7f8c8d; outline: none;}
+        .team-score { width: 35px; font-size: 18px; font-weight: bold; background: transparent; border: none; color: white; text-align: center; outline: none;}
+        .btn-plus { background-color: #2ecc71; color: white; border: none; border-radius: 5px; padding: 2px 8px; font-size: 14px; cursor: pointer; }
+        .btn-minus { background-color: #e74c3c; color: white; border: none; border-radius: 5px; padding: 2px 8px; font-size: 14px; cursor: pointer; }
+        .settings-btn { background-color: #3498db; color: white; border: none; padding: 5px 10px; font-size: 14px; font-weight: bold; border-radius: 8px; cursor: pointer; }
+
+        /* Кнопки прокрутки (40% шаг) */
         .scroll-controls { position: fixed; bottom: 20px; right: 20px; display: flex; flex-direction: column; gap: 10px; z-index: 1500; }
-        .scroll-btn { width: 60px; height: 60px; background-color: #e94560; color: white; border: 3px solid #ffffff; border-radius: 50%; font-size: 30px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; transition: 0.2s; }
+        .scroll-btn { width: 50px; height: 50px; background-color: #e94560; color: white; border: 3px solid #ffffff; border-radius: 50%; font-size: 24px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; transition: 0.2s; }
         .scroll-btn:hover { background-color: #c9344b; transform: scale(1.1); }
         .scroll-btn:active { transform: scale(0.9); }
 
@@ -32,8 +39,6 @@
         .modal-content input { width: 80%; padding: 10px; font-size: 16px; margin-bottom: 10px; border-radius: 5px; border: 1px solid #7f8c8d; }
         .modal-actions { margin-top: 15px; display: flex; justify-content: space-around; }
         .modal-actions button { padding: 10px 20px; font-size: 16px; border-radius: 5px; border: none; cursor: pointer; font-weight: bold; }
-        .btn-save { background-color: #2ecc71; color: white; }
-        .btn-cancel { background-color: #e74c3c; color: white; }
 
         /* Основной контент */
         .container { max-width: 800px; margin: 20px auto; padding: 0 15px; }
@@ -79,14 +84,21 @@
     </style>
 </head>
 <body>
-    <div class="scoreboard" id="scoreboard">
-        <div class="level-panel">
-            <button class="level-btn" onclick="setLevel('all')" id="btn-lvl-all">All</button>
-            <button class="level-btn active" onclick="setLevel(0)" id="btn-lvl-0">L0</button>
-            <button class="level-btn" onclick="setLevel(1)" id="btn-lvl-1">L1</button>
-            <button class="level-btn" onclick="setLevel(2)" id="btn-lvl-2">L2</button>
+    <div class="scoreboard">
+        <div class="top-row">
+            <div class="tab-panel">
+                <button class="main-tab active" id="tab-juniors" onclick="switchMainTab('juniors')">Juniors</button>
+                <button class="main-tab" id="tab-seniors" onclick="switchMainTab('seniors')">Seniors</button>
+            </div>
+            <div class="level-panel">
+                <button class="level-btn active" id="btn-lvl-0" onclick="setLevel(0)">Level 0</button>
+                <button class="level-btn" id="btn-lvl-1" onclick="setLevel(1)">Level 1</button>
+            </div>
+            <button class="settings-btn" onclick="openSettings()">⚙️ Teams</button>
         </div>
-        <button class="settings-btn" onclick="openSettings()">⚙️ Edit Teams</button>
+        <div class="team-container" id="teamContainer">
+            <!-- Teams inserted here -->
+        </div>
     </div>
 
     <div class="scroll-controls">
@@ -100,8 +112,8 @@
             <div id="teamInputsContainer"></div>
             <button onclick="addTeamInput()" style="margin-bottom: 15px; background-color: #3498db; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold;">+ Add Team</button>
             <div class="modal-actions">
-                <button class="btn-save" onclick="saveSettings()">Save</button>
-                <button class="btn-cancel" onclick="closeSettings()">Cancel</button>
+                <button style="background-color: #2ecc71; color: white;" onclick="saveSettings()">Save</button>
+                <button style="background-color: #e74c3c; color: white;" onclick="closeSettings()">Cancel</button>
             </div>
         </div>
     </div>
@@ -109,195 +121,355 @@
     <div class="container" id="quizContainer"></div>
 
     <script>
-        function scrollUp() { window.scrollBy({ top: -window.innerHeight * 0.4, behavior: 'smooth' }); }
-        function scrollDown() { window.scrollBy({ top: window.innerHeight * 0.4, behavior: 'smooth' }); }
+        // === БАЗА ДАННЫХ ===
+        const quizData = {
+            juniors: [
+                {
+                    title: "Maisy: Umbrella & Feather",
+                    youtubeId: "IWP8jABKlKA", 
+                    startTime: 8, 
+                    endTime: 23,  
+                    questions: [
+                        { 
+                            en: "A ______ for Charlie!", zh: "A ______ for Charlie!", py: "A ______ for Charlie!",
+                            options: [
+                                { en: "Present", zh: "礼物", py: "lǐwù", correct: true },
+                                { en: "Ball", zh: "球", py: "qiú" },
+                                { en: "Cake", zh: "蛋糕", py: "dàngāo" },
+                                { en: "Hat", zh: "帽子", py: "màozi" }
+                            ]
+                        },
+                        { 
+                            en: "What animal is Maisy?", zh: "Maisy是什么动物？", py: "Maisy shì shénme dòngwù?",
+                            options: [
+                                { en: "A mouse", zh: "老鼠", py: "lǎoshǔ", correct: true },
+                                { en: "A cat", zh: "猫", py: "māo" },
+                                { en: "A dog", zh: "狗", py: "gǒu" },
+                                { en: "A rabbit", zh: "兔子", py: "tùzi" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    title: "Maisy: Birthday",
+                    youtube "Id: "IWP8jZhABKlKA", 
+                   è startTime: 23, zh 
+                    endTime: 34,ī  
+                    questions: [
+ d                        { 
+                            en: "it must be charlie's ______ today", zh: "it must be charlie's ______ today", py: "it must be charlie's ______ today",
+                            options: [
+                                { en: "Birthday", zh: "生日", py: "shēngrì", correct: true },
+                                { en: "Morning", zh: "早上", py: "zǎoshang" },
+                                { en: "Day", zh: "白天", py: "báitiān" },
+                                { en: "Night", zh: "晚上", py: "wǎnshang" }
+                            ]
+                        },
+                        { 
+                            en: "Who is this big animal?", zh: "这只大动物是谁？", py:à dòngwù shì shéi?",
+                            options: [
+                                { en: "Elephant", zh: "大象", py: "dàxiàng", correct: true },
+                                { en: "Mouse", zh: "老鼠", py: "lǎoshǔ" },
+                                { en: "Dog", zh: "狗", py: "gǒu" },
+                                { en: "Cat", zh: "猫", py: "māo" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    title: "Maisy: Greetings",
+                    youtubeId: "IWP8jABKlKA", 
+                    startTime: 32, 
+                    endTime: 39,  
+                    questions: [
+                        { 
+                            en: "______ charlie, happy birthday!", zh: "______ charlie, happy birthday!", py: "______ charlie, happy birthday!",
+                            options: [
+                                { en: "Hello", zh: "你好", py: "nǐ hǎo", correct: true },
+                                { en: "Bye", zh: "再见", py: "zàijiàn" },
+                                { en: "Thank you", zh: "谢谢", py: "xièxie" },
+                                { en: "Sorry", zh: "对不起", py: "duìbuqǐ" }
+                            ]
+                        },
+                        { 
+                            en: "What is the elephant holding?", zh: "大象拿着什么？", py: "Dàxiàng názhe shénme?",
+                            options: [
+                                { en: "A present", zh: "礼物", py: "lǐwù", correct: true },
+                                { en: "An apple", zh: "苹果", py: "píngguǒ" },
+                                { en: "A book", zh: "书", py: "shū" },
+                                { en: "A hat", zh: "帽子", py: "màozi" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    title: "Maisy: Cyril's Gift",
+                    youtubeId: "IWP8jABKlKA", 
+                    startTime: 60, 
+                    endTime: 72,  
+                    questions: [
+                        { 
+                            en: "i wonder what ______ has given you", zh: "i wonder what ______ has given you", py: "i wonder what ______ has given you",
+                            options: [
+                                { en: "Cyril", zh: "基里尔", py: "Kèlǐ'ěr", correct: true },
+                                { en: "Maisy", zh: "梅齐", py: "Měizī" },
+                                { en: "Eddie", zh: "埃迪", py: "Āidí" },
+                                { en: "Tallulah", zh: "塔露拉", py: "Tǎlùlā" }
+                            ]
+                        },
+                        { 
+                            en: "What did Cyril give?", zh: "基里尔给了什么？", py: "Kèlǐ'ěr gěi le shénme?",
+                            options: [
+                                { en: "A flashlight", zh: "手电筒", py: "shǒudiàntǒng", correct: true },
+                                { en: "A sweater", zh: "毛衣", py: "máoyī" },
+                                { en: "A ball", zh: "球", py: "qiú" },
+                                { en: "A book", zh: "书", py: "shū" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    title: "Maisy: The Sweater",
+                    youtubeId: "IWP8jABKlKA", 
+                    startTime: 72, 
+                    endTime: 85,  
+                    questions: [
+                        { 
+                            en: "oh great a ______!", zh: "oh great a ______!", py: "oh great a ______!",
+                            options: [
+                                { en: "Sweater", zh: "毛衣", py: "máoyī", correct: true },
+                                { en: "Hat", zh: "帽子", py: "màozi" },
+                                { en: "Socks", zh: "袜子", py: "wàzi" },
+                                { en: "Shoes", zh: "鞋子", py: "xiézi" }
+                            ]
+                        },
+                        { 
+                            en: "What color is the sweater?", zh: "毛衣是什么颜色？", py: "Máoyī shì shénme yánsè?",
+                            options: [
+                                { en: "Blue", zh: "蓝色", py: "lánsè", correct: true },
+                                { en: "Red", zh: "红色", py: "hóngsè" },
+                                { en: "Green", zh: "绿色", py: "lǜsè" },
+                                { en: "Yellow", zh: "黄色", py: "huángsè" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    title: "Maisy: The Boat",
+                    youtubeId: "IWP8jABKlKA", 
+                    startTime: 85, 
+                    endTime: 97,  
+                    questions: [
+                        { 
+                            en: "Happy birthday, ______!", zh: "Happy birthday, ______!", py: "Happy birthday, ______!",
+                            options: [
+                                { en: "Charlie", zh: "查理", py: "Chálǐ", correct: true },
+                                { en: "Maisy", zh: "梅齐", py: "Měizī" },
+                                { en: "Tallulah", zh: "塔露拉", py: "Tǎlùlā" },
+                                { en: "Eddie", zh: "埃迪", py: "Āidí" }
+                            ]
+                        },
+                        { 
+                            en: "What did the elephant give?", zh: "大象送了什么？", py: "Dàxiàng sòng le shénme?",
+                            options: [
+                                { en: "A boat", zh: "小船", py: "xiǎochuán", correct: true },
+                                { en: "An apple", zh: "苹果", py: "píngguǒ" },
+                                { en: "A hat", zh: "帽子", py: "màozi" },
+                                { en: "A book", zh: "书", py: "shū" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    title: "Maisy: The Umbrella",
+                    youtubeId: "IWP8jABKlKA", 
+                    startTime: 98, 
+                    endTime: 106,  
+                    questions: [
+                        { 
+                            en: "it's an ______!", zh: "it's an ______!", py: "it's an ______!",
+                            options: [
+                                { en: "Umbrella", zh: "雨伞", py: "yǔsǎn", correct: true },
+                                { en: "Orange", zh: "橘子", py: "júzi" },
+                                { en: "Apple", zh: "苹果", py: "píngguǒ" },
+                                { en: "Elephant", zh: "大象", py: "dàxiàng" }
+                            ]
+                        },
+                        { 
+                            en: "Is the umbrella open or closed?", zh: "雨伞是打开的，还是关闭的？", py: "Yǔsǎn shì dǎkāi de, háishì guānbì de?",
+                            options: [
+                                { en: "Open", zh: "打开的", py: "dǎkāi de", correct: true },
+                                { en: "Closed", zh: "关闭的", py: "guānbì de" },
+                                { en: "Big", zh: "大的", py: "dà de" },
+                                { en: "Small", zh: "小的", py: "xiǎo de" }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            seniors: [
+                {
+                    title: "Arthur: The Desert",
+                    youtubeId: "WJQJQrbsuIE", 
+                    startTime: 80, 
+                    endTime: 94,  
+                    questions: [
+                        { 
+                            en: "Is she thirsty?", zh: "她渴吗？", py: "Tā kě ma?",
+                            options: [
+                                { en: "Yes", zh: "是的", py: "shì de", correct: true },
+                                { en: "No", zh: "不是", py: "bú shì" },
+                                { en: "Maybe", zh: "可能", py: "kěnéng" },
+                                { en: "I don't know", zh: "不知道", py: "bù zhīdào" }
+                            ]
+                        },
+                        { 
+                            en: "What else does she feel?", zh: "她还有什么感觉？", py: "Tā hái yǒu shénme gǎnjué?",
+                            options: [
+                                { en: "Hungry", zh: "饿", py: "è", correct: true },
+                                { en: "Happy", zh: "开心", py: "kāixīn" },
+                                { en: "Sleepy", zh: "困了", py: "kùn le" },
+                                { en: "Cold", zh: "冷", py: "lěng" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    title: "Arthur: The Camel",
+                    youtubeId: "WJQJQrbsuIE", 
+                    startTime: 94, 
+                    endTime: 109,  
+                    questions: [
+                        { 
+                            en: "What animal is in the video?", zh: "影片里有什么动物？", py: "Yǐngpiàn lǐ yǒu shénme dòngwù?",
+                            options: [
+                                { en: "A camel", zh: "骆驼", py: "luòtuo", correct: true },
+                                { en: "A dog", zh: "狗", py: "gǒu" },
+                                { en: "A cat", zh: "猫", py: "māo" },
+                                { en: "A horse", zh: "马", py: "mǎ" }
+                            ]
+                        },
+                        { 
+                            en: "What does she do?", zh: "她做了什么？", py: "Tā zuò le shénme?",
+                            options: [
+                                { en: "She walks", zh: "她走路", py: "tā zǒulù", correct: true },
+                                { en: "She sleeps", zh: "她睡觉", py: "tā shuìjiào" },
+                                { en: "She runs", zh: "她跑步", py: "tā pǎobù" },
+                                { en: "She eats", zh: "她吃东西", py: "tā chī dōngxi" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    title: "Arthur: Drop it",
+                    youtubeId: "WJQJQrbsuIE", 
+                    startTime: 109, 
+                    endTime: 122,  
+                    questions: [
+                        { 
+                            en: "What did the voice say? '______ that fruit!'", zh: "那个声音说了什么？'______ that fruit!'", py: "Nàge shēngyīn shuō le shénme? '______ that fruit!'",
+                            options: [
+                                { en: "Drop", zh: "丢掉", py: "diūdiào", correct: true },
+                                { en: "Eat", zh: "吃掉", py: "chīdiào" },
+                                { en: "Keep", zh: "保留", py: "bǎoliú" },
+                                { en: "Wash", zh: "洗", py: "xǐ" }
+                            ]
+                        },
+                        { 
+                            en: "What fruit is she holding?", zh: "她拿着什么水果？", py: "Tā názhe shénme shuǐguǒ?",
+                            options: [
+                                { en: "An orange", zh: "柳橙", py: "liǔchéng", correct: true },
+                                { en: "An apple", zh: "苹果", py: "píngguǒ" },
+                                { en: "A banana", zh: "香蕉", py: "xiāngjiāo" },
+                                { en: "A lemon", zh: "柠檬", py: "níngméng" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    title: "Arthur: The Water",
+                    youtubeId: "WJQJQrbsuIE", 
+                    startTime: 122, 
+                    endTime: 135,  
+                    questions: [
+                        { 
+                            en: "Complete: 'But why would I want to keep myself from ______?'", zh: "完成：'But why would I want to keep myself from ______?'", py: "Wánchéng: 'But why would I want to keep myself from ______?'",
+                            options: [
+                                { en: "Eating", zh: "吃", py: "chī", correct: true },
+                                { en: "Sleeping", zh: "睡觉", py: "shuìjiào" },
+                                { en: "Running", zh: "跑步", py: "pǎobù" },
+                                { en: "Singing", zh: "唱歌", py: "chànggē" }
+                            ]
+                        },
+                        { 
+                            en: "Is there water?", zh: "有水吗？", py: "Yǒu shuǐ ma?",
+                            options: [
+                                { en: "Yes", zh: "是的", py: "shì de", correct: true },
+                                { en: "No", zh: "不是", py: "bú shì" },
+                                { en: "A tree", zh: "树", py: "shù" },
+                                { en: "A house", zh: "房子", py: "fángzi" }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    title: "Arthur: Don't look",
+                    youtubeId: "WJQJQrbsuIE", 
+                    startTime: 135, 
+                    endTime: 144,  
+                    questions: [
+                        { 
+                            en: "Complete the sentence: '______ look at me!'", zh: "完成句子：'______ look at me!'", py: "Wánchéng jùzi: '______ look at me!'",
+                            options: [
+                                { en: "Don't", zh: "不要", py: "búyào", correct: true },
+                                { en: "Do", zh: "做", py: "zuò" },
+                                { en: "Can", zh: "能", py: "néng" },
+                                { en: "Please", zh: "请", py: "qǐng" }
+                            ]
+                        },
+                        { 
+                            en: "What is the weather like?", zh: "天气怎么样？", py: "Tiānqì zěnme yàng?",
+                            options: [
+                                { en: "Sunny", zh: "晴天", py: "qíngtiān", correct: true },
+                                { en: "Rainy", zh: "雨天", py: "yǔtiān" },
+                                { en: "Snowy", zh: "雪天", py: "xuětiān" },
+                                { en: "Cloudy", zh: "阴天", py: "yīntiān" }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        };
 
-        let currentLevelFilter = 0;
+        // === СОСТОЯНИЕ ===
+        let currentTab = 'juniors';
+        let currentLevel = 0;
 
-        function setLevel(level) {
-            currentLevelFilter = level;
-            document.getElementById('btn-lvl-all').classList.remove('active');
-            document.getElementById('btn-lvl-0').classList.remove('active');
-            document.getElementById('btn-lvl-1').classList.remove('active');
-            document.getElementById('btn-lvl-2').classList.remove('active');
-            
-            if (level === 'all') document.getElementById('btn-lvl-all').classList.add('active');
-            else if (level === 0) document.getElementById('btn-lvl-0').classList.add('active');
-            else if (level === 1) document.getElementById('btn-lvl-1').classList.add('active');
-            else if (level === 2) document.getElementById('btn-lvl-2').classList.add('active');
-
+        // === ЛОГИКА ВКЛАДОК И УРОВНЕЙ ===
+        function switchMainTab(tab) {
+            currentTab = tab;
+            document.getElementById('tab-juniors').classList.toggle('active', tab === 'juniors');
+            document.getElementById('tab-seniors').classList.toggle('active', tab === 'seniors');
             renderQuiz();
         }
 
-        // БАЗА ДАННЫХ (L0 с китайским и 2 вариантами, L1/L2 чистый английский по 4 варианта)
-        const quizData = [
-            {
-                title: "Video 1: The Newspaper",
-                youtubeId: "mQz3G0G3XHs", 
-                startTime: 4, endTime: 15,  
-                questions: [
-                    // --- L0 ---
-                    { 
-                        level: 0,
-                        en: "Who is on the couch?", zh: "誰在沙發上？", py: "Shéi zài shāfā shàng?",
-                        options: [
-                            { key: 1, en: "Mom", zh: "妈妈", py: "māma" },
-                            { key: 2, en: "Dad", zh: "爸爸", py: "bàba", correct: true }
-                        ]
-                    },
-                    { 
-                        level: 0,
-                        en: "What is Dad reading?", zh: "爸爸在看什麼？", py: "Bàba zài kàn shénme?",
-                        options: [
-                            { key: 1, en: "A book", zh: "书", py: "shū" },
-                            { key: 2, en: "A newspaper", zh: "报纸", py: "bàozhǐ", correct: true }
-                        ]
-                    },
-                    { 
-                        level: 0,
-                        en: "What room is Dad in?", zh: "爸爸在哪個房間？", py: "Bàba zài nǎ ge fángjiān?",
-                        options: [
-                            { key: 1, en: "Living room", zh: "客厅", py: "kètīng", correct: true },
-                            { key: 2, en: "Kitchen", zh: "厨房", py: "chúfáng" }
-                        ]
-                    },
-                    // --- L1 ---
-                    { level: 1, en: "Who is on the couch?", options: [ {key:1, en:"Mom"}, {key:2, en:"Dad", correct:true}, {key:3, en:"Bluey"}, {key:4, en:"Bingo"} ] },
-                    { level: 1, en: "What do the kids want?", options: [ {key:1, en:"A song", correct:true}, {key:2, en:"A toy"}, {key:3, en:"An apple"}, {key:4, en:"A book"} ] },
-                    { level: 1, en: "Does Dad say 'Yes'?", options: [ {key:1, en:"Yes", correct:true}, {key:2, en:"No"}, {key:3, en:"He is sleeping"}, {key:4, en:"He is angry"} ] },
-                    // --- L2 ---
-                    { level: 2, en: "How does Dad feel at the beginning?", options: [ {key:1, en:"Relaxed", correct:true}, {key:2, en:"Angry"}, {key:3, en:"Scared"}, {key:4, en:"Sad"} ] },
-                    { level: 2, en: "What is Dad reading?", options: [ {key:1, en:"A newspaper", correct:true}, {key:2, en:"A book"}, {key:3, en:"A magazine"}, {key:4, en:"A comic"} ] },
-                    { level: 2, en: "What shouldn't the song be?", options: [ {key:1, en:"Annoying", correct:true}, {key:2, en:"Fast"}, {key:3, en:"Long"}, {key:4, en:"Sad"} ] }
-                ]
-            },
-            {
-                title: "Video 2: Burger Dog",
-                youtubeId: "mQz3G0G3XHs", 
-                startTime: 15, endTime: 32,  
-                questions: [
-                    // --- L0 ---
-                    { 
-                        level: 0,
-                        en: "What is the song?", zh: "這首歌是什麼？", py: "Zhè shǒu gē shì shénme?",
-                        options: [
-                            { key: 1, en: "Cat Dog", zh: "猫狗", py: "māo gǒu" },
-                            { key: 2, en: "Burger Dog", zh: "汉堡狗", py: "hànbǎo gǒu", correct: true }
-                        ]
-                    },
-                    { 
-                        level: 0,
-                        en: "What is inside the burger?", zh: "漢堡裡有什麼？", py: "Hànbǎo lǐ yǒu shénme?",
-                        options: [
-                            { key: 1, en: "Cheese", zh: "奶酪", py: "nǎilào", correct: true },
-                            { key: 2, en: "Fish", zh: "鱼", py: "yú" }
-                        ]
-                    },
-                    { 
-                        level: 0,
-                        en: "What are the kids doing?", zh: "孩子們在做什麼？", py: "Háizimen zài zuò shénme?",
-                        options: [
-                            { key: 1, en: "Sleeping", zh: "睡觉", py: "shuìjiào" },
-                            { key: 2, en: "Dancing", zh: "跳舞", py: "tiàowǔ", correct: true }
-                        ]
-                    },
-                    // --- L1 ---
-                    { level: 1, en: "What is the name of the song?", options: [ {key:1, en:"Burger Cat"}, {key:2, en:"Burger Dog", correct:true}, {key:3, en:"Hot Dog"}, {key:4, en:"Pizza"} ] },
-                    { level: 1, en: "What does the burger have inside?", options: [ {key:1, en:"Pickles and cheese", correct:true}, {key:2, en:"Fish and chips"}, {key:3, en:"Apple and banana"}, {key:4, en:"Bread and butter"} ] },
-                    { level: 1, en: "What are the kids doing?", options: [ {key:1, en:"Sleeping"}, {key:2, en:"Dancing", correct:true}, {key:3, en:"Reading"}, {key:4, en:"Eating"} ] },
-                    // --- L2 ---
-                    { level: 2, en: "Who asks: 'What's it called?'", options: [ {key:1, en:"Bluey"}, {key:2, en:"Bingo"}, {key:3, en:"Dad", correct:true}, {key:4, en:"Mom"} ] },
-                    { level: 2, en: "How does Dad react when he hears the song?", options: [ {key:1, en:"He says it's not annoying", correct:true}, {key:2, en:"He turns it off"}, {key:3, en:"He gets angry"}, {key:4, en:"He sings loudly"} ] },
-                    { level: 2, en: "What is NOT mentioned in the song?", options: [ {key:1, en:"Cheese"}, {key:2, en:"Pickles"}, {key:3, en:"Tomatoes", correct:true}, {key:4, en:"Sugar"} ] }
-                ]
-            },
-            {
-                title: "Video 3: Out of Battery",
-                youtubeId: "mQz3G0G3XHs", 
-                startTime: 45, endTime: 58,  
-                questions: [
-                    // --- L0 ---
-                    { 
-                        level: 0,
-                        en: "What color is the phone?", zh: "手機是什麼顏色？", py: "Shǒujī shì shénme yánsè?",
-                        options: [
-                            { key: 1, en: "White", zh: "白色", py: "báisè" },
-                            { key: 2, en: "Black", zh: "黑色", py: "hēisè", correct: true }
-                        ]
-                    },
-                    { 
-                        level: 0,
-                        en: "Is the phone dead?", zh: "手機沒電了嗎？", py: "Shǒujī méi diàn le ma?",
-                        options: [
-                            { key: 1, en: "Maybe", zh: "可能", py: "kěnéng" },
-                            { key: 2, en: "Yes", zh: "是的", py: "shì de", correct: true }
-                        ]
-                    },
-                    { 
-                        level: 0,
-                        en: "What color is the couch?", zh: "沙發是什麼顏色？", py: "Shāfā shì shénme yánsè?",
-                        options: [
-                            { key: 1, en: "Red", zh: "红色", py: "hóngsè", correct: true },
-                            { key: 2, en: "Blue", zh: "蓝色", py: "lánsè" }
-                        ]
-                    },
-                    // --- L1 ---
-                    { level: 1, en: "What does Dad say about his phone?", options: [ {key:1, en:"It is broken"}, {key:2, en:"It is out of battery", correct:true}, {key:3, en:"It is lost"}, {key:4, en:"It is new"} ] },
-                    { level: 1, en: "What color is the phone screen?", options: [ {key:1, en:"Red"}, {key:2, en:"Green"}, {key:3, en:"Black", correct:true}, {key:4, en:"White"} ] },
-                    { level: 1, en: "Does Bluey believe Dad?", options: [ {key:1, en:"Yes"}, {key:2, en:"No", correct:true}, {key:3, en:"She is sleeping"}, {key:4, en:"She is crying"} ] },
-                    // --- L2 ---
-                    { level: 2, en: "Why does Dad say his phone is out of battery?", options: [ {key:1, en:"He wants to stop playing the song", correct:true}, {key:2, en:"The phone is really broken"}, {key:3, en:"He wants to go to sleep"}, {key:4, en:"He is playing a game"} ] },
-                    { level: 2, en: "What does Bluey say to Dad?", options: [ {key:1, en:"No, it hasn't.", correct:true}, {key:2, en:"Yes, it has."}, {key:3, en:"I want a new phone."}, {key:4, en:"Let's go to sleep."} ] },
-                    { level: 2, en: "What does Bluey see on the phone?", options: [ {key:1, en:"A black screen", correct:true}, {key:2, en:"A funny video"}, {key:3, en:"A new game"}, {key:4, en:"A red battery"} ] }
-                ]
-            },
-            {
-                title: "Video 4: The Lie",
-                youtubeId: "mQz3G0G3XHs", 
-                startTime: 77, endTime: 92,  
-                questions: [
-                    // --- L0 ---
-                    { 
-                        level: 0,
-                        en: "Who calls Dad?", zh: "誰給爸爸打電話？", py: "Shéi gěi bàba dǎ diànhuà?",
-                        options: [
-                            { key: 1, en: "Mom", zh: "妈妈", py: "māma", correct: true },
-                            { key: 2, en: "Bingo", zh: "宾果", py: "bīnguǒ" }
-                        ]
-                    },
-                    { 
-                        level: 0,
-                        en: "Is Dad lying?", zh: "爸爸在撒謊嗎？", py: "Bàba zài sāhuǎng ma?",
-                        options: [
-                            { key: 1, en: "Maybe", zh: "可能", py: "kěnéng" },
-                            { key: 2, en: "Yes", zh: "是的", py: "shì de", correct: true }
-                        ]
-                    },
-                    { 
-                        level: 0,
-                        en: "Is Mom happy?", zh: "媽媽開心嗎？", py: "Māma kāixīn ma?",
-                        options: [
-                            { key: 1, en: "Yes", zh: "是的", py: "shì de" },
-                            { key: 2, en: "No", zh: "不", py: "bù", correct: true }
-                        ]
-                    },
-                    // --- L1 ---
-                    { level: 1, en: "What is Mom doing?", options: [ {key:1, en:"Cooking"}, {key:2, en:"Calling on the phone", correct:true}, {key:3, en:"Sleeping"}, {key:4, en:"Reading"} ] },
-                    { level: 1, en: "What does Dad say to Bluey?", options: [ {key:1, en:"I love you."}, {key:2, en:"I would never lie to you.", correct:true}, {key:3, en:"Let's go to sleep."}, {key:4, en:"Give me the phone."} ] },
-                    { level: 1, en: "Does Dad say he is lying?", options: [ {key:1, en:"Yes", correct:true}, {key:2, en:"No"}, {key:3, en:"He is sleeping"}, {key:4, en:"He is crying"} ] },
-                    // --- L2 ---
-                    { level: 2, en: "What does Mom ask Dad?", options: [ {key:1, en:"Are you playing a game?"}, {key:2, en:"Are you lying to your children again?", correct:true}, {key:3, en:"Where is your phone?"}, {key:4, en:"Are you sleeping?"} ] },
-                    { level: 2, en: "What does Dad promise Bluey before Mom calls?", options: [ {key:1, en:"I would never lie to you.", correct:true}, {key:2, en:"I will buy you a toy."}, {key:3, en:"I am very tired."}, {key:4, en:"Let's eat a burger."} ] },
-                    { level: 2, en: "Why does Mom say 'again'?", options: [ {key:1, en:"Because Dad lies to the kids often.", correct:true}, {key:2, en:"Because Dad is sleeping."}, {key:3, en:"Because the phone is broken."}, {key:4, en:"Because Bluey is crying."} ] }
-                ]
-            }
-        ];
+        function setLevel(level) {
+            currentLevel = level;
+            document.getElementById('btn-lvl-0').classList.toggle('active', level === 0);
+            document.getElementById('btn-lvl-1').classList.toggle('active', level === 1);
+            renderQuiz();
+        }
 
+        // === ПРОКРУТКА (40%) ===
+        function scrollUp() { window.scrollBy({ top: -window.innerHeight * 0.4, behavior: 'smooth' }); }
+        function scrollDown() { window.scrollBy({ top: window.innerHeight * 0.4, behavior: 'smooth' }); }
+
+        // === КОМАНДЫ ===
         let teams = JSON.parse(localStorage.getItem('videoQuizTeams')) || [{ name: "Red", score: 0 }, { name: "Blue", score: 0 }];
 
         function renderScoreboard() {
-            const header = document.getElementById('scoreboard');
-            Array.from(header.children).forEach(child => { if (child.classList.contains('team-card')) header.removeChild(child); });
+            const container = document.getElementById('teamContainer');
+            container.innerHTML = '';
             teams.forEach((team, index) => {
                 const card = document.createElement('div');
                 card.className = 'team-card';
@@ -307,9 +479,10 @@
                     <input type="number" class="team-score" value="${team.score}" onchange="updateScore(${index}, this.value)">
                     <button class="btn-plus" onclick="changeScore(${index}, 1)">+</button>
                 `;
-                header.insertBefore(card, header.querySelector('.settings-btn'));
+                container.appendChild(card);
             });
         }
+
         function changeScore(index, amount) { teams[index].score += amount; saveData(); renderScoreboard(); }
         function updateScore(index, value) { teams[index].score = parseInt(value) || 0; saveData(); renderScoreboard(); }
         function updateTeamName(index, value) { teams[index].name = value; saveData(); }
@@ -317,57 +490,82 @@
 
         function openSettings() { const c = document.getElementById('teamInputsContainer'); c.innerHTML = ''; teams.forEach(t => addTeamInput(t.name)); document.getElementById('settingsModal').style.display = 'flex'; }
         function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
-        function addTeamInput(value = "") { const c = document.getElementById('teamInputsContainer'); const i = document.createElement('input'); i.type = 'text'; i.value = value; i.placeholder = "Team Name"; i.className = "team-settings-input"; i.style.display = "block"; i.style.margin = "0 auto 10px auto"; c.appendChild(i); }
+        function addTeamInput(value = "") { const c = document.getElementById('teamInputsContainer'); const i = document.createElement('input'); i.type = 'text'; i.value = value; i.placeholder = "Team Name"; i.className = "team-settings-input"; c.appendChild(i); }
         function saveSettings() {
             const inputs = document.querySelectorAll('.team-settings-input'); const newTeams = [];
             inputs.forEach(i => { if (i.value.trim() !== "") { const ex = teams.find(t => t.name === i.value.trim()); newTeams.push({ name: i.value.trim(), score: ex ? ex.score : 0 }); } });
             if (newTeams.length > 0) { teams = newTeams; saveData(); renderScoreboard(); } closeSettings();
         }
 
+        // === ГЛАВНАЯ ЛОГИКА РЕНДЕРА ВИКТОРИНЫ ===
+        function shuffle(array) {
+            let currentIndex = array.length, randomIndex;
+            let tempArray = [...array]; 
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [tempArray[currentIndex], tempArray[randomIndex]] = [tempArray[randomIndex], tempArray[currentIndex]];
+            }
+            return tempArray;
+        }
+
         function renderQuiz() {
             const container = document.getElementById('quizContainer');
             container.innerHTML = '';
+            
+            const currentData = quizData[currentTab];
+            let questionNumber = 1;
 
-            quizData.forEach((videoData, vIndex) => {
+            currentData.forEach((videoData, vIndex) => {
                 const section = document.createElement('div');
                 section.className = 'video-section';
                 
                 let qHTML = '';
-                let questionNumber = 1;
 
                 videoData.questions.forEach((q) => {
-                    if (currentLevelFilter !== 'all' && q.level !== currentLevelFilter) return;
+                    let correctOpt = q.options.find(o => o.correct);
+                    let wrongOpts = q.options.filter(o => !o.correct);
+
+                    let displayOpts = [];
+                    if (currentLevel === 0) {
+                        let randomWrong = wrongOpts[Math.floor(Math.random() * wrongOpts.length)];
+                        displayOpts = [correctOpt, randomWrong];
+                    } else {
+                        displayOpts = q.options;
+                    }
+
+                    displayOpts = shuffle(displayOpts);
 
                     let optHTML = '';
-                    q.options.forEach(opt => {
+                    displayOpts.forEach((opt, idx) => {
                         let textHTML = `<span class="opt-en">${opt.en}</span>`;
-                        if (q.level === 0 && opt.zh) {
+                        if (currentLevel === 0 && opt.zh) {
                             textHTML += `<span class="opt-zh">${opt.zh}</span><span class="opt-py">${opt.py}</span>`;
                         }
-                        optHTML += `<button class="option-btn" onclick="checkAnswer(this, ${opt.correct || false})"><span class="option-letter">${opt.key}</span><div class="option-text-container">${textHTML}</div></button>`;
+                        optHTML += `<button class="option-btn" onclick="checkAnswer(this, ${opt.correct})"><span class="option-letter">${idx + 1}</span><div class="option-text-container">${textHTML}</div></button>`;
                     });
 
                     let qTextHTML = `<div class="q-text-en">${questionNumber}. ${q.en}</div>`;
-                    if (q.level === 0 && q.zh) {
+                    if (currentLevel === 0 && q.zh) {
                         qTextHTML += `<div class="q-text-zh">${q.zh}</div><div class="q-text-py">${q.py}</div>`;
                     }
 
-                    let gridClass = q.level === 0 ? 'options-grid' : 'options-grid four-options';
+                    let gridClass = currentLevel === 0 ? 'options-grid' : 'options-grid four-options';
                     qHTML += `<div class="question-block">${qTextHTML}<div class="${gridClass}">${optHTML}</div></div>`;
                     questionNumber++;
                 });
 
                 section.innerHTML = `
                     <h2 class="video-title">${videoData.title}</h2>
-                    <div class="player-wrapper"><iframe id="video-${vIndex}" src="https://www.youtube.com/embed/${videoData.youtubeId}?start=${videoData.startTime}&end=${videoData.endTime}&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
-                    <div class="video-controls"><button onclick="reloadVideo(${vIndex})">▶ Replay</button></div>
+                    <div class="player-wrapper"><iframe id="video-${currentTab}-${vIndex}" src="https://www.youtube.com/embed/${videoData.youtubeId}?start=${videoData.startTime}&end=${videoData.endTime}&rel=0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>
+                    <div class="video-controls"><button onclick="reloadVideo('${currentTab}-${vIndex}')">▶ Replay</button></div>
                     ${qHTML}
                 `;
                 container.appendChild(section);
             });
         }
 
-        function reloadVideo(index) { const iframe = document.getElementById(`video-${index}`); iframe.src = iframe.src; }
+        function reloadVideo(id) { const iframe = document.getElementById(`video-${id}`); iframe.src = iframe.src; }
 
         function checkAnswer(btnElement, isCorrect) {
             if (btnElement.parentElement.querySelector('.correct')) return;
@@ -375,12 +573,14 @@
             options.forEach(opt => {
                 opt.disabled = true;
                 if (opt === btnElement) { if (isCorrect) opt.classList.add('correct'); else opt.classList.add('wrong'); }
-                // Также подсвечиваем правильный, если нажали на неправильный
                 else if (opt.getAttribute('onclick').includes('true')) opt.classList.add('correct');
             });
         }
 
-        window.onload = function() { renderScoreboard(); renderQuiz(); };
+        window.onload = function() {
+            renderScoreboard();
+            renderQuiz();
+        };
     </script>
 </body>
 </html>
