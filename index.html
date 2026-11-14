@@ -121,189 +121,82 @@
     <div class="container" id="quizContainer"></div>
 
     <script>
+        // === БЕЗОПАСНАЯ ЗАГРУЗКА КОМАНД ===
+        let teams = [];
+        try {
+            const saved = localStorage.getItem('videoQuizTeams');
+            if (saved) teams = JSON.parse(saved);
+        } catch (e) {
+            console.warn("Ошибка чтения памяти, сбрасываем команды.");
+        }
+        if (!Array.isArray(teams) || teams.length === 0) {
+            teams = [{ name: "Red", score: 0 }, { name: "Blue", score: 0 }];
+        }
+
         // === БАЗА ДАННЫХ ===
         const quizData = {
             juniors: [
                 {
                     title: "Maisy: Umbrella & Feather",
                     youtubeId: "IWP8jABKlKA", 
-                    startTime: 8, 
-                    endTime: 23,  
+                    startTime: 8, endTime: 23,  
                     questions: [
-                        { 
-                            en: "A ______ for Charlie!", zh: "A ______ for Charlie!", py: "A ______ for Charlie!",
-                            options: [
-                                { en: "Present", zh: "礼物", py: "lǐwù", correct: true },
-                                { en: "Ball", zh: "球", py: "qiú" },
-                                { en: "Cake", zh: "蛋糕", py: "dàngāo" },
-                                { en: "Hat", zh: "帽子", py: "màozi" }
-                            ]
-                        },
-                        { 
-                            en: "What animal is Maisy?", zh: "Maisy是什么动物？", py: "Maisy shì shénme dòngwù?",
-                            options: [
-                                { en: "A mouse", zh: "老鼠", py: "lǎoshǔ", correct: true },
-                                { en: "A cat", zh: "猫", py: "māo" },
-                                { en: "A dog", zh: "狗", py: "gǒu" },
-                                { en: "A rabbit", zh: "兔子", py: "tùzi" }
-                            ]
-                        }
+                        { en: "A ______ for Charlie!", zh: "A ______ for Charlie!", py: "A ______ for Charlie!", options: [ { en: "Present", zh: "礼物", py: "lǐwù", correct: true }, { en: "Ball", zh: "球", py: "qiú" }, { en: "Cake", zh: "蛋糕", py: "dàngāo" }, { en: "Hat", zh: "帽子", py: "màozi" } ] },
+                        { en: "What animal is Maisy?", zh: "Maisy是什么动物？", py: "Maisy shì shénme dòngwù?", options: [ { en: "A mouse", zh: "老鼠", py: "lǎoshǔ", correct: true }, { en: "A cat", zh: "猫", py: "māo" }, { en: "A dog", zh: "狗", py: "gǒu" }, { en: "A rabbit", zh: "兔子", py: "tùzi" } ] }
                     ]
                 },
                 {
                     title: "Maisy: Birthday",
-                    youtube "Id: "IWP8jZhABKlKA", 
-                   è startTime: 23, zh 
-                    endTime: 34,ī  
+                    youtubeId: "IWP8jABKlKA", 
+                    startTime: 23, endTime: 34,  
                     questions: [
- d                        { 
-                            en: "it must be charlie's ______ today", zh: "it must be charlie's ______ today", py: "it must be charlie's ______ today",
-                            options: [
-                                { en: "Birthday", zh: "生日", py: "shēngrì", correct: true },
-                                { en: "Morning", zh: "早上", py: "zǎoshang" },
-                                { en: "Day", zh: "白天", py: "báitiān" },
-                                { en: "Night", zh: "晚上", py: "wǎnshang" }
-                            ]
-                        },
-                        { 
-                            en: "Who is this big animal?", zh: "这只大动物是谁？", py:à dòngwù shì shéi?",
-                            options: [
-                                { en: "Elephant", zh: "大象", py: "dàxiàng", correct: true },
-                                { en: "Mouse", zh: "老鼠", py: "lǎoshǔ" },
-                                { en: "Dog", zh: "狗", py: "gǒu" },
-                                { en: "Cat", zh: "猫", py: "māo" }
-                            ]
-                        }
+                        { en: "it must be charlie's ______ today", zh: "it must be charlie's ______ today", py: "it must be charlie's ______ today", options: [ { en: "Birthday", zh: "生日", py: "shēngrì", correct: true }, { en: "Morning", zh: "早上", py: "zǎoshang" }, { en: "Day", zh: "白天", py: "báitiān" }, { en: "Night", zh: "晚上", py: "wǎnshang" } ] },
+                        { en: "Who is this big animal?", zh: "这只大动物是谁？", py: "Zhè zhī dà dòngwù shì shéi?", options: [ { en: "Elephant", zh: "大象", py: "dàxiàng", correct: true }, { en: "Mouse", zh: "老鼠", py: "lǎoshǔ" }, { en: "Dog", zh: "狗", py: "gǒu" }, { en: "Cat", zh: "猫", py: "māo" } ] }
                     ]
                 },
                 {
                     title: "Maisy: Greetings",
                     youtubeId: "IWP8jABKlKA", 
-                    startTime: 32, 
-                    endTime: 39,  
+                    startTime: 32, endTime: 39,  
                     questions: [
-                        { 
-                            en: "______ charlie, happy birthday!", zh: "______ charlie, happy birthday!", py: "______ charlie, happy birthday!",
-                            options: [
-                                { en: "Hello", zh: "你好", py: "nǐ hǎo", correct: true },
-                                { en: "Bye", zh: "再见", py: "zàijiàn" },
-                                { en: "Thank you", zh: "谢谢", py: "xièxie" },
-                                { en: "Sorry", zh: "对不起", py: "duìbuqǐ" }
-                            ]
-                        },
-                        { 
-                            en: "What is the elephant holding?", zh: "大象拿着什么？", py: "Dàxiàng názhe shénme?",
-                            options: [
-                                { en: "A present", zh: "礼物", py: "lǐwù", correct: true },
-                                { en: "An apple", zh: "苹果", py: "píngguǒ" },
-                                { en: "A book", zh: "书", py: "shū" },
-                                { en: "A hat", zh: "帽子", py: "màozi" }
-                            ]
-                        }
+                        { en: "______ charlie, happy birthday!", zh: "______ charlie, happy birthday!", py: "______ charlie, happy birthday!", options: [ { en: "Hello", zh: "你好", py: "nǐ hǎo", correct: true }, { en: "Bye", zh: "再见", py: "zàijiàn" }, { en: "Thank you", zh: "谢谢", py: "xièxie" }, { en: "Sorry", zh: "对不起", py: "duìbuqǐ" } ] },
+                        { en: "What is the elephant holding?", zh: "大象拿着什么？", py: "Dàxiàng názhe shénme?", options: [ { en: "A present", zh: "礼物", py: "lǐwù", correct: true }, { en: "An apple", zh: "苹果", py: "píngguǒ" }, { en: "A book", zh: "书", py: "shū" }, { en: "A hat", zh: "帽子", py: "màozi" } ] }
                     ]
                 },
                 {
                     title: "Maisy: Cyril's Gift",
                     youtubeId: "IWP8jABKlKA", 
-                    startTime: 60, 
-                    endTime: 72,  
+                    startTime: 60, endTime: 72,  
                     questions: [
-                        { 
-                            en: "i wonder what ______ has given you", zh: "i wonder what ______ has given you", py: "i wonder what ______ has given you",
-                            options: [
-                                { en: "Cyril", zh: "基里尔", py: "Kèlǐ'ěr", correct: true },
-                                { en: "Maisy", zh: "梅齐", py: "Měizī" },
-                                { en: "Eddie", zh: "埃迪", py: "Āidí" },
-                                { en: "Tallulah", zh: "塔露拉", py: "Tǎlùlā" }
-                            ]
-                        },
-                        { 
-                            en: "What did Cyril give?", zh: "基里尔给了什么？", py: "Kèlǐ'ěr gěi le shénme?",
-                            options: [
-                                { en: "A flashlight", zh: "手电筒", py: "shǒudiàntǒng", correct: true },
-                                { en: "A sweater", zh: "毛衣", py: "máoyī" },
-                                { en: "A ball", zh: "球", py: "qiú" },
-                                { en: "A book", zh: "书", py: "shū" }
-                            ]
-                        }
+                        { en: "i wonder what ______ has given you", zh: "i wonder what ______ has given you", py: "i wonder what ______ has given you", options: [ { en: "Cyril", zh: "基里尔", py: "Kèlǐ'ěr", correct: true }, { en: "Maisy", zh: "梅齐", py: "Měizī" }, { en: "Eddie", zh: "埃迪", py: "Āidí" }, { en: "Tallulah", zh: "塔露拉", py: "Tǎlùlā" } ] },
+                        { en: "What did Cyril give?", zh: "基里尔给了什么？", py: "Kèlǐ'ěr gěi le shénme?", options: [ { en: "A flashlight", zh: "手电筒", py: "shǒudiàntǒng", correct: true }, { en: "A sweater", zh: "毛衣", py: "máoyī" }, { en: "A ball", zh: "球", py: "qiú" }, { en: "A book", zh: "书", py: "shū" } ] }
                     ]
                 },
                 {
                     title: "Maisy: The Sweater",
                     youtubeId: "IWP8jABKlKA", 
-                    startTime: 72, 
-                    endTime: 85,  
+                    startTime: 72, endTime: 85,  
                     questions: [
-                        { 
-                            en: "oh great a ______!", zh: "oh great a ______!", py: "oh great a ______!",
-                            options: [
-                                { en: "Sweater", zh: "毛衣", py: "máoyī", correct: true },
-                                { en: "Hat", zh: "帽子", py: "màozi" },
-                                { en: "Socks", zh: "袜子", py: "wàzi" },
-                                { en: "Shoes", zh: "鞋子", py: "xiézi" }
-                            ]
-                        },
-                        { 
-                            en: "What color is the sweater?", zh: "毛衣是什么颜色？", py: "Máoyī shì shénme yánsè?",
-                            options: [
-                                { en: "Blue", zh: "蓝色", py: "lánsè", correct: true },
-                                { en: "Red", zh: "红色", py: "hóngsè" },
-                                { en: "Green", zh: "绿色", py: "lǜsè" },
-                                { en: "Yellow", zh: "黄色", py: "huángsè" }
-                            ]
-                        }
+                        { en: "oh great a ______!", zh: "oh great a ______!", py: "oh great a ______!", options: [ { en: "Sweater", zh: "毛衣", py: "máoyī", correct: true }, { en: "Hat", zh: "帽子", py: "màozi" }, { en: "Socks", zh: "袜子", py: "wàzi" }, { en: "Shoes", zh: "鞋子", py: "xiézi" } ] },
+                        { en: "What color is the sweater?", zh: "毛衣是什么颜色？", py: "Máoyī shì shénme yánsè?", options: [ { en: "Blue", zh: "蓝色", py: "lánsè", correct: true }, { en: "Red", zh: "红色", py: "hóngsè" }, { en: "Green", zh: "绿色", py: "lǜsè" }, { en: "Yellow", zh: "黄色", py: "huángsè" } ] }
                     ]
                 },
                 {
                     title: "Maisy: The Boat",
                     youtubeId: "IWP8jABKlKA", 
-                    startTime: 85, 
-                    endTime: 97,  
+                    startTime: 85, endTime: 97,  
                     questions: [
-                        { 
-                            en: "Happy birthday, ______!", zh: "Happy birthday, ______!", py: "Happy birthday, ______!",
-                            options: [
-                                { en: "Charlie", zh: "查理", py: "Chálǐ", correct: true },
-                                { en: "Maisy", zh: "梅齐", py: "Měizī" },
-                                { en: "Tallulah", zh: "塔露拉", py: "Tǎlùlā" },
-                                { en: "Eddie", zh: "埃迪", py: "Āidí" }
-                            ]
-                        },
-                        { 
-                            en: "What did the elephant give?", zh: "大象送了什么？", py: "Dàxiàng sòng le shénme?",
-                            options: [
-                                { en: "A boat", zh: "小船", py: "xiǎochuán", correct: true },
-                                { en: "An apple", zh: "苹果", py: "píngguǒ" },
-                                { en: "A hat", zh: "帽子", py: "màozi" },
-                                { en: "A book", zh: "书", py: "shū" }
-                            ]
-                        }
+                        { en: "Happy birthday, ______!", zh: "Happy birthday, ______!", py: "Happy birthday, ______!", options: [ { en: "Charlie", zh: "查理", py: "Chálǐ", correct: true }, { en: "Maisy", zh: "梅齐", py: "Měizī" }, { en: "Tallulah", zh: "塔露拉", py: "Tǎlùlā" }, { en: "Eddie", zh: "埃迪", py: "Āidí" } ] },
+                        { en: "What did the elephant give?", zh: "大象送了什么？", py: "Dàxiàng sòng le shénme?", options: [ { en: "A boat", zh: "小船", py: "xiǎochuán", correct: true }, { en: "An apple", zh: "苹果", py: "píngguǒ" }, { en: "A hat", zh: "帽子", py: "màozi" }, { en: "A book", zh: "书", py: "shū" } ] }
                     ]
                 },
                 {
                     title: "Maisy: The Umbrella",
                     youtubeId: "IWP8jABKlKA", 
-                    startTime: 98, 
-                    endTime: 106,  
+                    startTime: 98, endTime: 106,  
                     questions: [
-                        { 
-                            en: "it's an ______!", zh: "it's an ______!", py: "it's an ______!",
-                            options: [
-                                { en: "Umbrella", zh: "雨伞", py: "yǔsǎn", correct: true },
-                                { en: "Orange", zh: "橘子", py: "júzi" },
-                                { en: "Apple", zh: "苹果", py: "píngguǒ" },
-                                { en: "Elephant", zh: "大象", py: "dàxiàng" }
-                            ]
-                        },
-                        { 
-                            en: "Is the umbrella open or closed?", zh: "雨伞是打开的，还是关闭的？", py: "Yǔsǎn shì dǎkāi de, háishì guānbì de?",
-                            options: [
-                                { en: "Open", zh: "打开的", py: "dǎkāi de", correct: true },
-                                { en: "Closed", zh: "关闭的", py: "guānbì de" },
-                                { en: "Big", zh: "大的", py: "dà de" },
-                                { en: "Small", zh: "小的", py: "xiǎo de" }
-                            ]
-                        }
+                        { en: "it's an ______!", zh: "it's an ______!", py: "it's an ______!", options: [ { en: "Umbrella", zh: "雨伞", py: "yǔsǎn", correct: true }, { en: "Orange", zh: "橘子", py: "júzi" }, { en: "Apple", zh: "苹果", py: "píngguǒ" }, { en: "Elephant", zh: "大象", py: "dàxiàng" } ] },
+                        { en: "Is the umbrella open or closed?", zh: "雨伞是打开的，还是关闭的？", py: "Yǔsǎn shì dǎkāi de, háishì guānbì de?", options: [ { en: "Open", zh: "打开的", py: "dǎkāi de", correct: true }, { en: "Closed", zh: "关闭的", py: "guānbì de" }, { en: "Big", zh: "大的", py: "dà de" }, { en: "Small", zh: "小的", py: "xiǎo de" } ] }
                     ]
                 }
             ],
@@ -311,131 +204,46 @@
                 {
                     title: "Arthur: The Desert",
                     youtubeId: "WJQJQrbsuIE", 
-                    startTime: 80, 
-                    endTime: 94,  
+                    startTime: 80, endTime: 94,  
                     questions: [
-                        { 
-                            en: "Is she thirsty?", zh: "她渴吗？", py: "Tā kě ma?",
-                            options: [
-                                { en: "Yes", zh: "是的", py: "shì de", correct: true },
-                                { en: "No", zh: "不是", py: "bú shì" },
-                                { en: "Maybe", zh: "可能", py: "kěnéng" },
-                                { en: "I don't know", zh: "不知道", py: "bù zhīdào" }
-                            ]
-                        },
-                        { 
-                            en: "What else does she feel?", zh: "她还有什么感觉？", py: "Tā hái yǒu shénme gǎnjué?",
-                            options: [
-                                { en: "Hungry", zh: "饿", py: "è", correct: true },
-                                { en: "Happy", zh: "开心", py: "kāixīn" },
-                                { en: "Sleepy", zh: "困了", py: "kùn le" },
-                                { en: "Cold", zh: "冷", py: "lěng" }
-                            ]
-                        }
+                        { en: "Is she thirsty?", zh: "她渴吗？", py: "Tā kě ma?", options: [ { en: "Yes", zh: "是的", py: "shì de", correct: true }, { en: "No", zh: "不是", py: "bú shì" }, { en: "Maybe", zh: "可能", py: "kěnéng" }, { en: "I don't know", zh: "不知道", py: "bù zhīdào" } ] },
+                        { en: "What else does she feel?", zh: "她还有什么感觉？", py: "Tā hái yǒu shénme gǎnjué?", options: [ { en: "Hungry", zh: "饿", py: "è", correct: true }, { en: "Happy", zh: "开心", py: "kāixīn" }, { en: "Sleepy", zh: "困了", py: "kùn le" }, { en: "Cold", zh: "冷", py: "lěng" } ] }
                     ]
                 },
                 {
                     title: "Arthur: The Camel",
                     youtubeId: "WJQJQrbsuIE", 
-                    startTime: 94, 
-                    endTime: 109,  
+                    startTime: 94, endTime: 109,  
                     questions: [
-                        { 
-                            en: "What animal is in the video?", zh: "影片里有什么动物？", py: "Yǐngpiàn lǐ yǒu shénme dòngwù?",
-                            options: [
-                                { en: "A camel", zh: "骆驼", py: "luòtuo", correct: true },
-                                { en: "A dog", zh: "狗", py: "gǒu" },
-                                { en: "A cat", zh: "猫", py: "māo" },
-                                { en: "A horse", zh: "马", py: "mǎ" }
-                            ]
-                        },
-                        { 
-                            en: "What does she do?", zh: "她做了什么？", py: "Tā zuò le shénme?",
-                            options: [
-                                { en: "She walks", zh: "她走路", py: "tā zǒulù", correct: true },
-                                { en: "She sleeps", zh: "她睡觉", py: "tā shuìjiào" },
-                                { en: "She runs", zh: "她跑步", py: "tā pǎobù" },
-                                { en: "She eats", zh: "她吃东西", py: "tā chī dōngxi" }
-                            ]
-                        }
+                        { en: "What animal is in the video?", zh: "影片里有什么动物？", py: "Yǐngpiàn lǐ yǒu shénme dòngwù?", options: [ { en: "A camel", zh: "骆驼", py: "luòtuo", correct: true }, { en: "A dog", zh: "狗", py: "gǒu" }, { en: "A cat", zh: "猫", py: "māo" }, { en: "A horse", zh: "马", py: "mǎ" } ] },
+                        { en: "What does she do?", zh: "她做了什么？", py: "Tā zuò le shénme?", options: [ { en: "She walks", zh: "她走路", py: "tā zǒulù", correct: true }, { en: "She sleeps", zh: "她睡觉", py: "tā shuìjiào" }, { en: "She runs", zh: "她跑步", py: "tā pǎobù" }, { en: "She eats", zh: "她吃东西", py: "tā chī dōngxi" } ] }
                     ]
                 },
                 {
                     title: "Arthur: Drop it",
                     youtubeId: "WJQJQrbsuIE", 
-                    startTime: 109, 
-                    endTime: 122,  
+                    startTime: 109, endTime: 122,  
                     questions: [
-                        { 
-                            en: "What did the voice say? '______ that fruit!'", zh: "那个声音说了什么？'______ that fruit!'", py: "Nàge shēngyīn shuō le shénme? '______ that fruit!'",
-                            options: [
-                                { en: "Drop", zh: "丢掉", py: "diūdiào", correct: true },
-                                { en: "Eat", zh: "吃掉", py: "chīdiào" },
-                                { en: "Keep", zh: "保留", py: "bǎoliú" },
-                                { en: "Wash", zh: "洗", py: "xǐ" }
-                            ]
-                        },
-                        { 
-                            en: "What fruit is she holding?", zh: "她拿着什么水果？", py: "Tā názhe shénme shuǐguǒ?",
-                            options: [
-                                { en: "An orange", zh: "柳橙", py: "liǔchéng", correct: true },
-                                { en: "An apple", zh: "苹果", py: "píngguǒ" },
-                                { en: "A banana", zh: "香蕉", py: "xiāngjiāo" },
-                                { en: "A lemon", zh: "柠檬", py: "níngméng" }
-                            ]
-                        }
+                        { en: "What did the voice say? '______ that fruit!'", zh: "那个声音说了什么？'______ that fruit!'", py: "Nàge shēngyīn shuō le shénme? '______ that fruit!'", options: [ { en: "Drop", zh: "丢掉", py: "diūdiào", correct: true }, { en: "Eat", zh: "吃掉", py: "chīdiào" }, { en: "Keep", zh: "保留", py: "bǎoliú" }, { en: "Wash", zh: "洗", py: "xǐ" } ] },
+                        { en: "What fruit is she holding?", zh: "她拿着什么水果？", py: "Tā názhe shénme shuǐguǒ?", options: [ { en: "An orange", zh: "柳橙", py: "liǔchéng", correct: true }, { en: "An apple", zh: "苹果", py: "píngguǒ" }, { en: "A banana", zh: "香蕉", py: "xiāngjiāo" }, { en: "A lemon", zh: "柠檬", py: "níngméng" } ] }
                     ]
                 },
                 {
                     title: "Arthur: The Water",
                     youtubeId: "WJQJQrbsuIE", 
-                    startTime: 122, 
-                    endTime: 135,  
+                    startTime: 122, endTime: 135,  
                     questions: [
-                        { 
-                            en: "Complete: 'But why would I want to keep myself from ______?'", zh: "完成：'But why would I want to keep myself from ______?'", py: "Wánchéng: 'But why would I want to keep myself from ______?'",
-                            options: [
-                                { en: "Eating", zh: "吃", py: "chī", correct: true },
-                                { en: "Sleeping", zh: "睡觉", py: "shuìjiào" },
-                                { en: "Running", zh: "跑步", py: "pǎobù" },
-                                { en: "Singing", zh: "唱歌", py: "chànggē" }
-                            ]
-                        },
-                        { 
-                            en: "Is there water?", zh: "有水吗？", py: "Yǒu shuǐ ma?",
-                            options: [
-                                { en: "Yes", zh: "是的", py: "shì de", correct: true },
-                                { en: "No", zh: "不是", py: "bú shì" },
-                                { en: "A tree", zh: "树", py: "shù" },
-                                { en: "A house", zh: "房子", py: "fángzi" }
-                            ]
-                        }
+                        { en: "Complete: 'But why would I want to keep myself from ______?'", zh: "完成：'But why would I want to keep myself from ______?'", py: "Wánchéng: 'But why would I want to keep myself from ______?'", options: [ { en: "Eating", zh: "吃", py: "chī", correct: true }, { en: "Sleeping", zh: "睡觉", py: "shuìjiào" }, { en: "Running", zh: "跑步", py: "pǎobù" }, { en: "Singing", zh: "唱歌", py: "chànggē" } ] },
+                        { en: "Is there water?", zh: "有水吗？", py: "Yǒu shuǐ ma?", options: [ { en: "Yes", zh: "是的", py: "shì de", correct: true }, { en: "No", zh: "不是", py: "bú shì" }, { en: "A tree", zh: "树", py: "shù" }, { en: "A house", zh: "房子", py: "fángzi" } ] }
                     ]
                 },
                 {
                     title: "Arthur: Don't look",
                     youtubeId: "WJQJQrbsuIE", 
-                    startTime: 135, 
-                    endTime: 144,  
+                    startTime: 135, endTime: 144,  
                     questions: [
-                        { 
-                            en: "Complete the sentence: '______ look at me!'", zh: "完成句子：'______ look at me!'", py: "Wánchéng jùzi: '______ look at me!'",
-                            options: [
-                                { en: "Don't", zh: "不要", py: "búyào", correct: true },
-                                { en: "Do", zh: "做", py: "zuò" },
-                                { en: "Can", zh: "能", py: "néng" },
-                                { en: "Please", zh: "请", py: "qǐng" }
-                            ]
-                        },
-                        { 
-                            en: "What is the weather like?", zh: "天气怎么样？", py: "Tiānqì zěnme yàng?",
-                            options: [
-                                { en: "Sunny", zh: "晴天", py: "qíngtiān", correct: true },
-                                { en: "Rainy", zh: "雨天", py: "yǔtiān" },
-                                { en: "Snowy", zh: "雪天", py: "xuětiān" },
-                                { en: "Cloudy", zh: "阴天", py: "yīntiān" }
-                            ]
-                        }
+                        { en: "Complete the sentence: '______ look at me!'", zh: "完成句子：'______ look at me!'", py: "Wánchéng jùzi: '______ look at me!'", options: [ { en: "Don't", zh: "不要", py: "búyào", correct: true }, { en: "Do", zh: "做", py: "zuò" }, { en: "Can", zh: "能", py: "néng" }, { en: "Please", zh: "请", py: "qǐng" } ] },
+                        { en: "What is the weather like?", zh: "天气怎么样？", py: "Tiānqì zěnme yàng?", options: [ { en: "Sunny", zh: "晴天", py: "qíngtiān", correct: true }, { en: "Rainy", zh: "雨天", py: "yǔtiān" }, { en: "Snowy", zh: "雪天", py: "xuětiān" }, { en: "Cloudy", zh: "阴天", py: "yīntiān" } ] }
                     ]
                 }
             ]
@@ -445,7 +253,6 @@
         let currentTab = 'juniors';
         let currentLevel = 0;
 
-        // === ЛОГИКА ВКЛАДОК И УРОВНЕЙ ===
         function switchMainTab(tab) {
             currentTab = tab;
             document.getElementById('tab-juniors').classList.toggle('active', tab === 'juniors');
@@ -460,12 +267,8 @@
             renderQuiz();
         }
 
-        // === ПРОКРУТКА (40%) ===
         function scrollUp() { window.scrollBy({ top: -window.innerHeight * 0.4, behavior: 'smooth' }); }
         function scrollDown() { window.scrollBy({ top: window.innerHeight * 0.4, behavior: 'smooth' }); }
-
-        // === КОМАНДЫ ===
-        let teams = JSON.parse(localStorage.getItem('videoQuizTeams')) || [{ name: "Red", score: 0 }, { name: "Blue", score: 0 }];
 
         function renderScoreboard() {
             const container = document.getElementById('teamContainer');
@@ -486,7 +289,9 @@
         function changeScore(index, amount) { teams[index].score += amount; saveData(); renderScoreboard(); }
         function updateScore(index, value) { teams[index].score = parseInt(value) || 0; saveData(); renderScoreboard(); }
         function updateTeamName(index, value) { teams[index].name = value; saveData(); }
-        function saveData() { localStorage.setItem('videoQuizTeams', JSON.stringify(teams)); }
+        function saveData() { 
+            try { localStorage.setItem('videoQuizTeams', JSON.stringify(teams)); } catch(e) {} 
+        }
 
         function openSettings() { const c = document.getElementById('teamInputsContainer'); c.innerHTML = ''; teams.forEach(t => addTeamInput(t.name)); document.getElementById('settingsModal').style.display = 'flex'; }
         function closeSettings() { document.getElementById('settingsModal').style.display = 'none'; }
@@ -497,7 +302,6 @@
             if (newTeams.length > 0) { teams = newTeams; saveData(); renderScoreboard(); } closeSettings();
         }
 
-        // === ГЛАВНАЯ ЛОГИКА РЕНДЕРА ВИКТОРИНЫ ===
         function shuffle(array) {
             let currentIndex = array.length, randomIndex;
             let tempArray = [...array]; 
@@ -514,6 +318,8 @@
             container.innerHTML = '';
             
             const currentData = quizData[currentTab];
+            if (!currentData) return;
+
             let questionNumber = 1;
 
             currentData.forEach((videoData, vIndex) => {
@@ -577,9 +383,21 @@
             });
         }
 
+        // Запуск с защитой от ошибок
         window.onload = function() {
-            renderScoreboard();
-            renderQuiz();
+            try {
+                renderScoreboard();
+                renderQuiz();
+            } catch (e) {
+                document.getElementById('quizContainer').innerHTML = `
+                    <div style="background: #fff; color: #000; padding: 20px; margin: 20px; border-radius: 10px; text-align: left;">
+                        <h2 style="color: red;">Ошибка загрузки:</h2>
+                        <p><strong>${e.message}</strong></p>
+                        <p>Попробуйте обновить страницу с зажатой клавишей Ctrl+F5, чтобы сбросить кэш.</p>
+                    </div>
+                `;
+                console.error(e);
+            }
         };
     </script>
 </body>
